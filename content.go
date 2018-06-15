@@ -1,5 +1,5 @@
 /*
-	Go library for attlassians confluence wiki
+	Go library for atlassian's confluence wiki
 
 	Copyright (C) 2017 Carsten Seeger
 
@@ -35,46 +35,63 @@ func (a *API) getEndpoint(id string) (*url.URL, error) {
 }
 
 // GetContent querys content by id
-func (a *API) GetContent(id string, query Query) (*Content, error) {
-	ep, err := a.getEndpoint(id)
-	if err != nil {
-		return nil, err
+func (a *API) GetContent(id string, query ContentQuery) (*Content, error) {
+	if ep, err := a.getEndpoint(id); err != nil {
+		ep.RawQuery = addContentQueryParams(query).Encode()
+		return a.SendContentRequest(ep, "GET", nil)
 	}
-
-	data := url.Values{}
-	if query.Type != "" {
-		data.Set("type", query.Type)
-	}
-	if query.Start != 0 {
-		data.Set("start", query.Start)
-	}
-	if query.Limit != 0 {
-		data.Set("limit", query.Limit)
-	}
-	if len(query.Expand) != 0 {
-		data.Set("expand", strings.Join(query.Expand, ","))
-	}
-	ep.RawQuery = data.Encode()
-
-	return a.SendContentRequest(ep, "GET", nil)
+	return nil, err
 }
 
 // UpdateContent updates content
 func (a *API) UpdateContent(c *Content) (*Content, error) {
-	ep, err := a.getEndpoint(c.ID)
-	if err != nil {
-		return nil, err
+	if ep, err := a.getEndpoint(c.ID); err != nil {
+		return SendContentRequest(ep, "PUT", c)
 	}
-
-	return SendContentRequest(ep, "PUT", c)
+	return nil, err
 }
 
 // DelContent deletes content by id
 func (a *API) DelContent(id string) (*Content, error) {
-	ep, err := a.getEndpoint(id)
-	if err != nil {
-		return nil, err
+	if ep, err := a.getEndpoint(id); err != nil {
+		return a.SendContentRequest(ep, "DELETE", nil)
 	}
+	return nil, err
+}
 
-	return a.SendContentRequest(ep, "DELETE", nil)
+// addContentQueryParams adds the defined query parameters
+func addContentQueryParams(query ContentQuery) *url.Values {
+
+	data := url.Values{}
+	if len(query.Expand) != 0 {
+		data.Set("expand", strings.Join(query.Expand, ","))
+	}
+	if query.Limit != 0 {
+		data.Set("limit", query.Limit)
+	}
+	if query.OrderBy != "" {
+		data.Set("orderby", query.OrderBy)
+	}
+	if query.PostingDay != "" {
+		data.Set("postingDay", query.PostingDay)
+	}
+	if query.SpaceKey != "" {
+		data.Set("spaceKey", query.SpaceKey)
+	}
+	if query.Start != 0 {
+		data.Set("start", query.Start)
+	}
+	if query.Status != "" {
+		data.Set("status", query.Status)
+	}
+	if query.Title != "" {
+		data.Set("title", query.Title)
+	}
+	if query.Trigger != "" {
+		data.Set("trigger", query.Trigger)
+	}
+	if query.Type != "" {
+		data.Set("type", query.Type)
+	}
+	return &data
 }

@@ -1,5 +1,5 @@
 /*
-	Go library for attlassians confluence wiki
+	Go library for atlassian's confluence wiki
 
 	Copyright (C) 2017 Carsten Seeger
 

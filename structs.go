@@ -1,5 +1,5 @@
 /*
-	Go library for attlassians confluence wiki
+	Go library for atlassian's confluence wiki
 
 	Copyright (C) 2017 Carsten Seeger
 
@@ -69,11 +69,18 @@ type Version struct {
 	Number int `json:"number"`
 }
 
-// Query defines the query parameters used for
-// searching
-type Query struct {
-	Type   string
-	Start  int
-	Limit  int
-	Expand []string
+// Query defines the query parameters
+// used for searching
+// Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-content-get
+type ContentQuery struct {
+	Expand     []string
+	Limit      int    // page limit
+	OrderBy    string // fieldpath asc/desc e.g: "history.createdDate desc"
+	PostingDay string // required for blogpost type Format: yyyy-mm-dd
+	SpaceKey   string
+	Start      int    // page start
+	Status     string // current, trashed, draft, any
+	Title      string // required for page
+	Trigger    string // viewed
+	Type       string // page, blogpost
 }
