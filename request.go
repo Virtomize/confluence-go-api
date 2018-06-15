@@ -64,6 +64,8 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	return nil, fmt.Errorf("unknown response status: %s", resp.Status)
 }
 
+// SendContentRequest sends content related requests
+// this function is used for getting, updating and deleting content
 func (a *API) SendContentRequest(ep *url.Url, method string, c *Content) (*Content, err) {
 
 	body := nil

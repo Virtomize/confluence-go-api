@@ -1,5 +1,5 @@
 /*
-	Go library for atlassian's confluence wiki
+	Go library for attlassians confluence wiki
 
 	Copyright (C) 2017 Carsten Seeger
 
@@ -69,7 +69,7 @@ type Version struct {
 	Number int `json:"number"`
 }
 
-// Query defines the query parameters
+// ContentQuery defines the query parameters
 // used for searching
 // Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-content-get
 type ContentQuery struct {
