@@ -31,10 +31,9 @@ import (
 )
 
 // NewAPI implements API constructor
-// password can be user password or user api-token
-func NewAPI(url string, username string, password string) (*API, error) {
-	if len(url) == 0 || len(username) == 0 || len(password) == 0 {
-		return nil, errors.New("url, username or password empty")
+func NewAPI(url string, username string, token string) (*API, error) {
+	if len(url) == 0 || len(username) == 0 || len(token) == 0 {
+		return nil, errors.New("url, username or token empty")
 	}
 
 	u, err := url.ParseRequestURI(location)
@@ -50,7 +49,7 @@ func NewAPI(url string, username string, password string) (*API, error) {
 
 	a := new(API)
 	a.endPoint = u
-	a.password = password
+	a.token = token
 	a.username = username
 	a.client = &http.Client{}
 
@@ -59,5 +58,5 @@ func NewAPI(url string, username string, password string) (*API, error) {
 
 // Auth implements basic auth
 func (a *API) Auth(req *http.Request) {
-	req.SetBasicAuth(a.username, a.password)
+	req.SetBasicAuth(a.username, a.token)
 }
