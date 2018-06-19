@@ -27,6 +27,7 @@ package goconfluence
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -66,11 +67,11 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 
 // SendContentRequest sends content related requests
 // this function is used for getting, updating and deleting content
-func (a *API) SendContentRequest(ep *url.Url, method string, c *Content) (*Content, err) {
+func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Content, error) {
 
-	body := nil
+	var body io.Reader
 	if c != nil {
-		js, err = json.Marshal(c)
+		js, err := json.Marshal(c)
 		if err != nil {
 			return nil, err
 		}
@@ -91,12 +92,35 @@ func (a *API) SendContentRequest(ep *url.Url, method string, c *Content) (*Conte
 		return nil, err
 	}
 
-	var c Content
+	var content Content
 
 	err = json.Unmarshal(res, &content)
 	if err != nil {
 		return nil, err
 	}
 
-	return &c, nil
+	return &content, nil
+}
+
+// SendUserRequest sends user related requests
+func (a *API) SendUserRequest(ep *url.URL, method string) (*User, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var user User
+
+	err = json.Unmarshal(res, &user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

@@ -84,3 +84,12 @@ type ContentQuery struct {
 	Trigger    string // viewed
 	Type       string // page, blogpost
 }
+
+// User defines user informations
+type User struct {
+	Type        string `json:"type"`
+	Username    string `json:"username"`
+	UserKey     string `json:"userKey"`
+	AccountID   string `json:"accountId"`
+	DisplayName string `json:"displayName"`
+}

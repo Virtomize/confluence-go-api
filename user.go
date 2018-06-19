@@ -25,40 +25,47 @@
 package goconfluence
 
 import (
-	"errors"
-	"net/http"
 	"net/url"
 	"strings"
 )
 
-// NewAPI implements API constructor
-func NewAPI(location string, username string, token string) (*API, error) {
-	if len(location) == 0 || len(username) == 0 || len(token) == 0 {
-		return nil, errors.New("url, username or token empty")
-	}
+// getContentEndpoint creates the correct api endpoint by given id
+func (a *API) getUserEndpoint(id string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/user/" + id)
+}
 
-	u, err := url.ParseRequestURI(location)
-
+// CurrentUser return current user information
+func (a *API) CurrentUser() (*User, error) {
+	ep, err := a.getUserEndpoint("current")
 	if err != nil {
 		return nil, err
 	}
-
-	if !strings.HasSuffix(u.Path, "/") {
-		u.Path += "/"
-	}
-
-	u.Path += "wiki/rest/api"
-
-	a := new(API)
-	a.endPoint = u
-	a.token = token
-	a.username = username
-	a.client = &http.Client{}
-
-	return a, nil
+	return a.SendUserRequest(ep, "GET")
 }
 
-// Auth implements basic auth
-func (a *API) Auth(req *http.Request) {
-	req.SetBasicAuth(a.username, a.token)
+// AnonymousUser return user information for anonymous user
+func (a *API) AnonymousUser() (*User, error) {
+	ep, err := a.getUserEndpoint("anonymous")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendUserRequest(ep, "GET")
+}
+
+// User returns user data for defined query
+// query can be accountID or username
+func (a *API) User(query string) (*User, error) {
+	ep, err := a.getUserEndpoint("")
+	if err != nil {
+		return nil, err
+	}
+	data := url.Values{}
+	if strings.Contains(query, ":") {
+		data.Set("accountId", query)
+	} else {
+		data.Set("username", query)
+	}
+
+	ep.RawQuery = data.Encode()
+	return a.SendUserRequest(ep, "GET")
 }

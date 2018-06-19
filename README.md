@@ -8,6 +8,9 @@ is a [Confluence](https://www.atlassian.com/software/confluence) REST API client
 
 ## Supportet Features
 
+- get, update, delete content
+- get user information
+
 ## Installation
 
 If you already installed GO on your system and configured it properly than its simply:
@@ -30,4 +33,5 @@ tbd
 
 ## Code Documentation
 
-You find the full [code documentation here](https://godoc.org/github.com/cseeger-epages/confluence-go-api)
+You find the full [code documentation here](https://godoc.org/github.com/cseeger-epages/confluence-go-api).
+The Confluence API documentation [can be found here](https://docs.atlassian.com/ConfluenceServer/rest/6.9.1/).

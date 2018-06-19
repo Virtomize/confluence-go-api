@@ -26,37 +26,41 @@ package goconfluence
 
 import (
 	"net/url"
+	"strconv"
 	"strings"
 )
 
-// getEndpoint creates the correct api endpoint by given id
-func (a *API) getEndpoint(id string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/content"/+id)
+// getContentEndpoint creates the correct api endpoint by given id
+func (a *API) getContentEndpoint(id string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id)
 }
 
 // GetContent querys content by id
 func (a *API) GetContent(id string, query ContentQuery) (*Content, error) {
-	if ep, err := a.getEndpoint(id); err != nil {
-		ep.RawQuery = addContentQueryParams(query).Encode()
-		return a.SendContentRequest(ep, "GET", nil)
+	ep, err := a.getContentEndpoint(id)
+	if err != nil {
+		return nil, err
 	}
-	return nil, err
+	ep.RawQuery = addContentQueryParams(query).Encode()
+	return a.SendContentRequest(ep, "GET", nil)
 }
 
 // UpdateContent updates content
 func (a *API) UpdateContent(c *Content) (*Content, error) {
-	if ep, err := a.getEndpoint(c.ID); err != nil {
-		return SendContentRequest(ep, "PUT", c)
+	ep, err := a.getContentEndpoint(c.ID)
+	if err != nil {
+		return nil, err
 	}
-	return nil, err
+	return a.SendContentRequest(ep, "PUT", c)
 }
 
 // DelContent deletes content by id
 func (a *API) DelContent(id string) (*Content, error) {
-	if ep, err := a.getEndpoint(id); err != nil {
-		return a.SendContentRequest(ep, "DELETE", nil)
+	ep, err := a.getContentEndpoint(id)
+	if err != nil {
+		return nil, err
 	}
-	return nil, err
+	return a.SendContentRequest(ep, "DELETE", nil)
 }
 
 // addContentQueryParams adds the defined query parameters
@@ -67,7 +71,7 @@ func addContentQueryParams(query ContentQuery) *url.Values {
 		data.Set("expand", strings.Join(query.Expand, ","))
 	}
 	if query.Limit != 0 {
-		data.Set("limit", query.Limit)
+		data.Set("limit", strconv.Itoa(query.Limit))
 	}
 	if query.OrderBy != "" {
 		data.Set("orderby", query.OrderBy)
@@ -79,7 +83,7 @@ func addContentQueryParams(query ContentQuery) *url.Values {
 		data.Set("spaceKey", query.SpaceKey)
 	}
 	if query.Start != 0 {
-		data.Set("start", query.Start)
+		data.Set("start", strconv.Itoa(query.Start))
 	}
 	if query.Status != "" {
 		data.Set("status", query.Status)
