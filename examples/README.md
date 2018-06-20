@@ -4,7 +4,10 @@
   - get, create and update content
 
 - content2.go
-  - get comments, attachments, child pages, history, labels and watchers
+  - get comments, attachments, child pages, history and watchers
+
+- labels.go
+  - get, add, delete labels
 
 - user.go
   - get currentUser, AnonymousUser or user by name/accountid

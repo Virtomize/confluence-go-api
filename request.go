@@ -172,11 +172,24 @@ func (a *API) SendHistoryRequest(ep *url.URL, method string) (*History, error) {
 }
 
 // SendLabelRequest requests history
-func (a *API) SendLabelRequest(ep *url.URL, method string) (*Labels, error) {
+func (a *API) SendLabelRequest(ep *url.URL, method string, labels *[]Label) (*Labels, error) {
 
-	req, err := http.NewRequest(method, ep.String(), nil)
+	var body io.Reader
+	if labels != nil {
+		js, err := json.Marshal(labels)
+		if err != nil {
+			return nil, err
+		}
+		body = strings.NewReader(string(js))
+	}
+
+	req, err := http.NewRequest(method, ep.String(), body)
 	if err != nil {
 		return nil, err
+	}
+
+	if body != nil {
+		req.Header.Add("Content-Type", "application/json")
 	}
 
 	res, err := a.Request(req)
@@ -184,14 +197,18 @@ func (a *API) SendLabelRequest(ep *url.URL, method string) (*Labels, error) {
 		return nil, err
 	}
 
-	var labels Labels
+	if res != nil {
+		var l Labels
 
-	err = json.Unmarshal(res, &labels)
-	if err != nil {
-		return nil, err
+		err = json.Unmarshal(res, &l)
+		if err != nil {
+			return nil, err
+		}
+
+		return &l, nil
 	}
 
-	return &labels, nil
+	return &Labels{}, nil
 }
 
 // SendWatcherRequest requests watchers

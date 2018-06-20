@@ -19,7 +19,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// loop over results
 	for _, v := range res.Results {
 		fmt.Printf("%+v\n", v)
 	}
@@ -53,16 +52,6 @@ func main() {
 	}
 
 	fmt.Printf("%+v\n", hist)
-
-	// get label information
-	labels, err := api.GetLabels("1234567")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, v := range labels.Labels {
-		fmt.Printf("%+v\n", v)
-	}
 
 	// get information about watching users
 	res, err := api.GetWatchers("1234567")

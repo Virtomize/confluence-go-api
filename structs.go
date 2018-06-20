@@ -107,9 +107,9 @@ type User struct {
 // Search results
 type Search struct {
 	Results []Content `json:"results"`
-	Start   int       `json:"start"`
-	Limit   int       `json:"limit"`
-	Size    int       `json:"size"`
+	Start   int       `json:"start,omitempty"`
+	Limit   int       `json:"limit,omitempty"`
+	Size    int       `json:"size,omitempty"`
 }
 
 // SearchQuery defines query parameters used for searchng
@@ -145,25 +145,25 @@ type LastUpdated struct {
 // Labels is the label containter type
 type Labels struct {
 	Labels []Label `json:"results"`
-	Start  int     `json:"start"`
-	Limit  int     `json:"limit"`
-	Size   int     `json:"size"`
+	Start  int     `json:"start,omitempty"`
+	Limit  int     `json:"limit,omitempty"`
+	Size   int     `json:"size,omitempty"`
 }
 
 // Label contains label information
 type Label struct {
 	Prefix string `json:"prefix"`
 	Name   string `json:"name"`
-	ID     string `json:"id"`
-	Label  string `json:"label"`
+	ID     string `json:"id,omitempty"`
+	Label  string `json:"label,omitempty"`
 }
 
 // Watchers is a list of Watcher
 type Watchers struct {
 	Watchers []Watcher `json:"results"`
-	Start    int       `json:"start"`
-	Limit    int       `json:"limit"`
-	Size     int       `json:"size"`
+	Start    int       `json:"start,omitempty"`
+	Limit    int       `json:"limit,omitempty"`
+	Size     int       `json:"size,omitempty"`
 }
 
 // Watcher contains information about watching users of a page

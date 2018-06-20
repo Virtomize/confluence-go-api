@@ -111,7 +111,25 @@ func (a *API) GetLabels(id string) (*Labels, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.SendLabelRequest(ep, "GET")
+	return a.SendLabelRequest(ep, "GET", nil)
+}
+
+// GetLabels returns a list of labels attachted to a content object
+func (a *API) AddLabels(id string, labels *[]Label) (*Labels, error) {
+	ep, err := a.getContentGenericEndpoint(id, "label")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendLabelRequest(ep, "POST", labels)
+}
+
+// DeleteLabel removes a label by name from content identified by id
+func (a *API) DeleteLabel(id string, name string) (*Labels, error) {
+	ep, err := a.getContentGenericEndpoint(id, "label/"+name)
+	if err != nil {
+		return nil, err
+	}
+	return a.SendLabelRequest(ep, "DELETE", nil)
 }
 
 // GetWatchers returns a list of watchers
