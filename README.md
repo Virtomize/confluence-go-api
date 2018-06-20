@@ -1,7 +1,5 @@
 # confluence-go-api
 
-== in development ==
-
 Rest api implementation of atlassian's confluence wiki
 
 is a [Confluence](https://www.atlassian.com/software/confluence) REST API client implementation written in [GOLANG](https://golang.org).
@@ -25,11 +23,36 @@ If not follow [these instructions](https://nats.io/documentation/tutorials/go-in
 
 ### Simple example
 
-tbd
+```
+package main
+
+import (
+  "fmt"
+  "log"
+
+  "github.com/cseeger-epages/confluence-go-api"
+)
+
+func main() {
+
+  // initialize a new api instance
+  api, err := goconfluence.NewAPI("https://<your-domain>.atlassian.net", "<username>", "<api-token>")
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  // get current user information
+  currentUser, err := api.CurrentUser()
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Printf("%+v\n", currentUser)
+}
+```
 
 ### Advanced examples
 
-tbd
+see [examples](https://github.com/cseeger-epages/confluence-go-api/tree/master/examples) for some more usage examples
 
 ## Code Documentation
 

@@ -45,7 +45,6 @@ func main() {
 	}
 
 	c, err := api.CreateContent(data)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,9 +75,7 @@ func main() {
 		},
 	}
 
-	//c, err := api.CreateContent(data)
 	c, err := api.UpdateContent(data)
-
 	if err != nil {
 		log.Fatal(err)
 	}
