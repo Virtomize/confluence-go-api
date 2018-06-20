@@ -87,6 +87,9 @@ func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Conte
 		req.Header.Add("Content-Type", "application/json")
 	}
 
+	// Debug
+	fmt.Println(req, body)
+
 	res, err := a.Request(req)
 	if err != nil {
 		return nil, err

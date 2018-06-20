@@ -45,6 +45,15 @@ func (a *API) GetContent(id string, query ContentQuery) (*Content, error) {
 	return a.SendContentRequest(ep, "GET", nil)
 }
 
+// CreateContent creates content
+func (a *API) CreateContent(c *Content) (*Content, error) {
+	ep, err := a.getContentEndpoint(c.ID)
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentRequest(ep, "POST", c)
+}
+
 // UpdateContent updates content
 func (a *API) UpdateContent(c *Content) (*Content, error) {
 	ep, err := a.getContentEndpoint(c.ID)

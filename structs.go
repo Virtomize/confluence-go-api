@@ -38,23 +38,24 @@ type API struct {
 
 // Content specifies content properties
 type Content struct {
-	ID        string     `json:"id"`
-	Type      string     `json:"type"`
-	Status    string     `json:"status"`
-	Title     string     `json:"title"`
+	ID        string     `json:"id,omitempty"`
+	Type      string     `json:"type,omitempty"`
+	Status    string     `json:"status,omitempty"`
+	Title     string     `json:"title,omitempty"`
 	Ancestors []Ancestor `json:"ancestors"`
-	Body      Body       `json: "body"`
+	Body      Body       `json:"body"`
 	Version   Version    `json:"version"`
+	Space     Space      `json:"space"`
 }
 
 // Ancestor defines ancestors to create sub pages
 type Ancestor struct {
-	ID int `json:"id"`
+	ID string `json:"id"`
 }
 
 // Body holds the storage information
 type Body struct {
-	Storage Storage `json: "storage"`
+	Storage Storage `json:"storage"`
 }
 
 // Storage defines the storage information
@@ -67,6 +68,15 @@ type Storage struct {
 // the version number is used for updating content
 type Version struct {
 	Number int `json:"number"`
+}
+
+// Space holds the Space information of a Content Page
+type Space struct {
+	ID     int    `json:"id,omitempty"`
+	Key    string `json:"key,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Type   string `json:"type,omitempty"`
+	Status string `json:"status,omitempty"`
 }
 
 // ContentQuery defines the query parameters
