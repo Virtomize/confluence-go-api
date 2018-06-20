@@ -21,11 +21,11 @@ Simple example:
 	fmt.Printf("%+v\n", currentUser)
 
 supported features:
-- get user information
-- create, update, delete content
-- get comments, attachments, history, watchers  and children of content objects
-- get, add, delete labels
-- search using CQL
+	- get user information
+	- create, update, delete content
+	- get comments, attachments, history, watchers  and children of content objects
+	- get, add, delete labels
+	- search using CQL
 
 see https://github.com/cseeger-epages/confluence-go-api/tree/master/examples for more information and usage examples
 
