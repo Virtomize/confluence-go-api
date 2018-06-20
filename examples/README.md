@@ -3,7 +3,7 @@
 - content.go
   - get, create and update content
 
-- content2.go
+- attributes.go
   - get comments, attachments, child pages, history and watchers
 
 - labels.go
