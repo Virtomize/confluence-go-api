@@ -11,7 +11,7 @@ Initialize a new API instance
 supported features:
 	- get user information
 	- create, update, delete content
-	- get comments, attachments and children of content objects
+	- get comments, attachments, labels, history, watchers  and children of content objects
 	- search using CQL
 
 see https://github.com/cseeger-epages/confluence-go-api/tree/master/examples for more information and usage examples

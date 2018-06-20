@@ -45,4 +45,33 @@ func main() {
 	for _, v := range res.Results {
 		fmt.Printf("%+v\n", v)
 	}
+
+	// get history information  of a page
+	hist, err := api.GetHistory("1234567")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%+v\n", hist)
+
+	// get label information
+	labels, err := api.GetLabels("1234567")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range labels.Labels {
+		fmt.Printf("%+v\n", v)
+	}
+
+	// get information about watching users
+	res, err := api.GetWatchers("1234567")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range res.Watchers {
+		fmt.Printf("%+v\n", v)
+	}
+
 }

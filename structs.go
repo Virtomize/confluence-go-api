@@ -107,6 +107,9 @@ type User struct {
 // Search results
 type Search struct {
 	Results []Content `json:"results"`
+	Start   int       `json:"start"`
+	Limit   int       `json:"limit"`
+	Size    int       `json:"size"`
 }
 
 // SearchQuery defines query parameters used for searchng
@@ -117,4 +120,55 @@ type SearchQuery struct {
 	IncludeArchivedSpaces bool
 	Limit                 int
 	Start                 int
+}
+
+// History contains object history information
+type History struct {
+	LastUpdated LastUpdated `json:"lastUpdated"`
+	Latest      bool        `json:"latest"`
+	CreatedBy   User        `json:"createdBy"`
+	CreatedDate string      `json:"createdDate"`
+}
+
+// LastUpdated  contains information about the last update
+type LastUpdated struct {
+	By           User   `json:"by"`
+	When         string `json:"when"`
+	FriendlyWhen string `json:"friendlyWhen"`
+	Message      string `json:"message"`
+	Number       int    `json:"number"`
+	MinorEdit    bool   `json:"minorEdit"`
+	SyncRev      string `json:"syncRev"`
+	ConfRev      string `json:"confRev"`
+}
+
+// Labels is the label containter type
+type Labels struct {
+	Labels []Label `json:"results"`
+	Start  int     `json:"start"`
+	Limit  int     `json:"limit"`
+	Size   int     `json:"size"`
+}
+
+// Label contains label information
+type Label struct {
+	Prefix string `json:"prefix"`
+	Name   string `json:"name"`
+	ID     string `json:"id"`
+	Label  string `json:"label"`
+}
+
+// Watchers is a list of Watcher
+type Watchers struct {
+	Watchers []Watcher `json:"results"`
+	Start    int       `json:"start"`
+	Limit    int       `json:"limit"`
+	Size     int       `json:"size"`
+}
+
+// Watcher contains information about watching users of a page
+type Watcher struct {
+	Type      string `json:"type"`
+	Watcher   User   `json:"watcher"`
+	ContentID int    `json:"contentId"`
 }

@@ -30,19 +30,24 @@ import (
 	"strings"
 )
 
-// getContentEndpoint creates the correct api endpoint by given id
+// getContentIDEndpoint creates the correct api endpoint by given id
 func (a *API) getContentIDEndpoint(id string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id)
 }
 
-// getContentEndpoint creates the correct api endpoint by given id
+// getContentEndpoint creates the correct api endpoint
 func (a *API) getContentEndpoint() (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/")
 }
 
-// getContentEndpoint creates the correct api endpoint by given id
+// getContentChildEndpoint creates the correct api endpoint by given id and type
 func (a *API) getContentChildEndpoint(id string, t string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/child/" + t)
+}
+
+// getContentGenericEndpoint creates the correct api endpoint by given id and type
+func (a *API) getContentGenericEndpoint(id string, t string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/" + t)
 }
 
 // GetContentByID querys content by id
@@ -89,6 +94,33 @@ func (a *API) GetAttachments(id string) (*Search, error) {
 		return nil, err
 	}
 	return a.SendSearchRequest(ep, "GET")
+}
+
+// GetHistory returns history information
+func (a *API) GetHistory(id string) (*History, error) {
+	ep, err := a.getContentGenericEndpoint(id, "history")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendHistoryRequest(ep, "GET")
+}
+
+// GetLabels returns a list of labels attachted to a content object
+func (a *API) GetLabels(id string) (*Labels, error) {
+	ep, err := a.getContentGenericEndpoint(id, "label")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendLabelRequest(ep, "GET")
+}
+
+// GetWatchers returns a list of watchers
+func (a *API) GetWatchers(id string) (*Watchers, error) {
+	ep, err := a.getContentGenericEndpoint(id, "notification/child-created")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendWatcherRequest(ep, "GET")
 }
 
 // CreateContent creates content

@@ -87,9 +87,6 @@ func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Conte
 		req.Header.Add("Content-Type", "application/json")
 	}
 
-	// Debug
-	fmt.Println(req, body)
-
 	res, err := a.Request(req)
 	if err != nil {
 		return nil, err
@@ -149,4 +146,72 @@ func (a *API) SendSearchRequest(ep *url.URL, method string) (*Search, error) {
 	}
 
 	return &search, nil
+}
+
+// SendHistoryRequest requests history
+func (a *API) SendHistoryRequest(ep *url.URL, method string) (*History, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var history History
+
+	err = json.Unmarshal(res, &history)
+	if err != nil {
+		return nil, err
+	}
+
+	return &history, nil
+}
+
+// SendLabelRequest requests history
+func (a *API) SendLabelRequest(ep *url.URL, method string) (*Labels, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var labels Labels
+
+	err = json.Unmarshal(res, &labels)
+	if err != nil {
+		return nil, err
+	}
+
+	return &labels, nil
+}
+
+// SendWatcherRequest requests watchers
+func (a *API) SendWatcherRequest(ep *url.URL, method string) (*Watchers, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+	var watchers Watchers
+
+	err = json.Unmarshal(res, &watchers)
+	if err != nil {
+		return nil, err
+	}
+
+	return &watchers, nil
 }
