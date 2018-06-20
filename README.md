@@ -5,6 +5,7 @@ is a [Confluence](https://www.atlassian.com/software/confluence) REST API client
 ## Supportet Features
 
 - get, update, delete content
+- get comments, attachments, children of content objects
 - get user information
 - search using [CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)
 

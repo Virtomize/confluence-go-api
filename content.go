@@ -40,6 +40,11 @@ func (a *API) getContentEndpoint() (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/")
 }
 
+// getContentEndpoint creates the correct api endpoint by given id
+func (a *API) getContentChildEndpoint(id string, t string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/child/" + t)
+}
+
 // GetContentByID querys content by id
 func (a *API) GetContentByID(id string) (*Content, error) {
 	ep, err := a.getContentIDEndpoint(id)
@@ -56,6 +61,33 @@ func (a *API) GetContent(query ContentQuery) (*Search, error) {
 		return nil, err
 	}
 	ep.RawQuery = addContentQueryParams(query).Encode()
+	return a.SendSearchRequest(ep, "GET")
+}
+
+// GetChildPages returns a content list of child page objects
+func (a *API) GetChildPages(id string) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "page")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendSearchRequest(ep, "GET")
+}
+
+// GetComments returns a list of comments belonging to id
+func (a *API) GetComments(id string) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "comment")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendSearchRequest(ep, "GET")
+}
+
+// GetAttachments returns a list of attachments belonging to id
+func (a *API) GetAttachments(id string) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "attachment")
+	if err != nil {
+		return nil, err
+	}
 	return a.SendSearchRequest(ep, "GET")
 }
 
