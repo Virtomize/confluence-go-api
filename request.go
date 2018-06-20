@@ -127,3 +127,26 @@ func (a *API) SendUserRequest(ep *url.URL, method string) (*User, error) {
 
 	return &user, nil
 }
+
+// SendSearchRequest sends search related requests
+func (a *API) SendSearchRequest(ep *url.URL, method string) (*Search, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var search Search
+
+	err = json.Unmarshal(res, &search)
+	if err != nil {
+		return nil, err
+	}
+
+	return &search, nil
+}

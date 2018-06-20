@@ -1,13 +1,12 @@
 # confluence-go-api
 
-Rest api implementation of atlassian's confluence wiki
-
 is a [Confluence](https://www.atlassian.com/software/confluence) REST API client implementation written in [GOLANG](https://golang.org).
 
 ## Supportet Features
 
 - get, update, delete content
 - get user information
+- search using [CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)
 
 If you miss some feature implementation, feel free to open an issue or send pull requests. I will take look as soon as possible.
 

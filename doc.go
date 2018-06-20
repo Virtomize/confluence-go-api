@@ -11,6 +11,7 @@ Initialize a new API instance
 supported features:
 	- get user information
 	- create, update, delete content
+	- search using CQL
 
 see https://github.com/cseeger-epages/confluence-go-api/tree/master/examples for more information and usage examples
 

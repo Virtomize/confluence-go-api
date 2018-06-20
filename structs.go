@@ -80,7 +80,7 @@ type Space struct {
 }
 
 // ContentQuery defines the query parameters
-// used for searching
+// used for content related searching
 // Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-content-get
 type ContentQuery struct {
 	Expand     []string
@@ -102,4 +102,19 @@ type User struct {
 	UserKey     string `json:"userKey"`
 	AccountID   string `json:"accountId"`
 	DisplayName string `json:"displayName"`
+}
+
+// Search results
+type Search struct {
+	Results []Content `json:"results"`
+}
+
+// SearchQuery defines query parameters used for searchng
+// Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-search-get
+type SearchQuery struct {
+	CQL                   string
+	CQLContext            string
+	IncludeArchivedSpaces bool
+	Limit                 int
+	Start                 int
 }
