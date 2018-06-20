@@ -14,12 +14,24 @@ func main() {
 	}
 
 	// get content by content id
-	c, err := api.GetContent("12345678", goconfluence.ContentQuery{})
+	c, err := api.GetContentByID("12345678")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Printf("%+v\n", c)
+
+	//get content by query
+	res, err := api.GetContent(goconfluence.ContentQuery{
+		SpaceKey: "IM",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range res.Results {
+		fmt.Printf("%+v\n", v)
+	}
 
 	// create content
 	data := &goconfluence.Content{

@@ -31,23 +31,37 @@ import (
 )
 
 // getContentEndpoint creates the correct api endpoint by given id
-func (a *API) getContentEndpoint(id string) (*url.URL, error) {
+func (a *API) getContentIDEndpoint(id string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id)
 }
 
-// GetContent querys content by id
-func (a *API) GetContent(id string, query ContentQuery) (*Content, error) {
-	ep, err := a.getContentEndpoint(id)
+// getContentEndpoint creates the correct api endpoint by given id
+func (a *API) getContentEndpoint() (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/content/")
+}
+
+// GetContentByID querys content by id
+func (a *API) GetContentByID(id string) (*Content, error) {
+	ep, err := a.getContentIDEndpoint(id)
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentRequest(ep, "GET", nil)
+}
+
+// GetContent querys content using a query parameters
+func (a *API) GetContent(query ContentQuery) (*Search, error) {
+	ep, err := a.getContentEndpoint()
 	if err != nil {
 		return nil, err
 	}
 	ep.RawQuery = addContentQueryParams(query).Encode()
-	return a.SendContentRequest(ep, "GET", nil)
+	return a.SendSearchRequest(ep, "GET")
 }
 
 // CreateContent creates content
 func (a *API) CreateContent(c *Content) (*Content, error) {
-	ep, err := a.getContentEndpoint(c.ID)
+	ep, err := a.getContentEndpoint()
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +70,7 @@ func (a *API) CreateContent(c *Content) (*Content, error) {
 
 // UpdateContent updates content
 func (a *API) UpdateContent(c *Content) (*Content, error) {
-	ep, err := a.getContentEndpoint(c.ID)
+	ep, err := a.getContentIDEndpoint(c.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +79,7 @@ func (a *API) UpdateContent(c *Content) (*Content, error) {
 
 // DelContent deletes content by id
 func (a *API) DelContent(id string) (*Content, error) {
-	ep, err := a.getContentEndpoint(id)
+	ep, err := a.getContentIDEndpoint(id)
 	if err != nil {
 		return nil, err
 	}
