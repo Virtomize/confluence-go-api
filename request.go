@@ -15,15 +15,25 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	req.Header.Add("Accept", "application/json, */*")
 	a.Auth(req)
 
+	Debug("====== Request ======")
+	Debug(req)
+	Debug("====== /Request ======")
+
 	resp, err := a.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+	Debug(fmt.Sprintf("====== Response Status Code: %d ======", resp.StatusCode))
 
 	switch resp.StatusCode {
 	case http.StatusOK, http.StatusCreated, http.StatusPartialContent:
 		res, err := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
+
+		Debug("====== Response Body ======")
+		Debug(string(res))
+		Debug("====== /Response Body ======")
+
 		if err != nil {
 			return nil, err
 		}

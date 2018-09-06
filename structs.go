@@ -12,6 +12,11 @@ type API struct {
 	username, token string
 }
 
+// Results array
+type Results struct {
+	Content Content `json:"content"`
+}
+
 // Content specifies content properties
 type Content struct {
 	ID        string     `json:"id,omitempty"`
@@ -82,7 +87,7 @@ type User struct {
 
 // Search results
 type Search struct {
-	Results []Content `json:"results"`
+	Results []Results `json:"results"`
 	Start   int       `json:"start,omitempty"`
 	Limit   int       `json:"limit,omitempty"`
 	Size    int       `json:"size,omitempty"`
