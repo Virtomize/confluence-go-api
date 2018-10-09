@@ -5,7 +5,7 @@ Simple example:
 
 	//Initialize a new API instance
 	api, err := goconfluence.NewAPI(
-		"https://<your-domain>.atlassian.net",
+		"https://<your-domain>.atlassian.net/wiki/rest/api",
 		"<username>",
 		"<api-token>",
 	)

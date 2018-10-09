@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 // NewAPI implements API constructor
@@ -18,12 +17,6 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	if !strings.HasSuffix(u.Path, "/") {
-		u.Path += "/"
-	}
-
-	u.Path += "wiki/rest/api"
 
 	a := new(API)
 	a.endPoint = u

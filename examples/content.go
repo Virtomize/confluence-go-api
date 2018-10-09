@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	api, err := goconfluence.NewAPI("https://<your-domain>.atlassian.net", "<username>", "<api-token>")
+	api, err := goconfluence.NewAPI("https://<your-domain>.atlassian.net/wiki/rest/api", "<username>", "<api-token>")
 	if err != nil {
 		log.Fatal(err)
 	}
