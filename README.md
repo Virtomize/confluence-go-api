@@ -1,5 +1,11 @@
 # confluence-go-api
 
+[![GoDoc](https://img.shields.io/badge/godoc-reference-green.svg)](https://godoc.org/github.com/cseeger-epages/confluence-go-api)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cseeger-epages/confluence-go-api)](https://goreportcard.com/report/github.com/cseeger-epages/confluence-go-api)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cseeger-epages/confluence-go-api/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/cseeger-epages/confluence-go-api.svg?branch=master)](https://travis-ci.org/cseeger-epages/confluence-go-api)
+
+
 is a [Confluence](https://www.atlassian.com/software/confluence) REST API client implementation written in [GOLANG](https://golang.org).
 
 ## Supportet Features
