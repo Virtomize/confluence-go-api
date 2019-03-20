@@ -24,7 +24,7 @@ func main() {
 	}
 
 	// get attachments of a specific page
-	res, err := api.GetAttachments("1234567")
+	res, err = api.GetAttachments("1234567")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	// get child pages of a specific page
-	res, err := api.GetChildPages("1234567")
+	res, err = api.GetChildPages("1234567")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,12 +54,12 @@ func main() {
 	fmt.Printf("%+v\n", hist)
 
 	// get information about watching users
-	res, err := api.GetWatchers("1234567")
+	watchers, err := api.GetWatchers("1234567")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, v := range res.Watchers {
+	for _, v := range watchers.Watchers {
 		fmt.Printf("%+v\n", v)
 	}
 

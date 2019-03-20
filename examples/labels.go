@@ -24,14 +24,11 @@ func main() {
 	}
 
 	// add new label
-	labels := []goconfluence.Label{
-		goconfluence.Label{
-			Prefix: "global",
-			Name:   "test-label-api",
-		},
+	newlabels := []goconfluence.Label{
+		{Prefix: "global", Name: "test-label-api"},
 	}
 
-	lres, err := api.AddLabels("1234567", &labels)
+	lres, err := api.AddLabels("1234567", &newlabels)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -56,7 +56,7 @@ func main() {
 		},
 	}
 
-	c, err := api.CreateContent(data)
+	c, err = api.CreateContent(data)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,7 +64,7 @@ func main() {
 	fmt.Printf("%+v\n", c)
 
 	// update content
-	data := &goconfluence.Content{
+	data = &goconfluence.Content{
 		ID:    "1234567",
 		Type:  "page",
 		Title: "updated-title",
@@ -87,7 +87,7 @@ func main() {
 		},
 	}
 
-	c, err := api.UpdateContent(data)
+	c, err = api.UpdateContent(data)
 	if err != nil {
 		log.Fatal(err)
 	}

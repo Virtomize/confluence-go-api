@@ -90,7 +90,7 @@ func (a *API) GetLabels(id string) (*Labels, error) {
 	return a.SendLabelRequest(ep, "GET", nil)
 }
 
-// GetLabels returns a list of labels attachted to a content object
+// AddLabels returns adds labels
 func (a *API) AddLabels(id string, labels *[]Label) (*Labels, error) {
 	ep, err := a.getContentGenericEndpoint(id, "label")
 	if err != nil {
