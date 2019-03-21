@@ -37,7 +37,7 @@ func (a *API) User(query string) (*User, error) {
 	}
 	data := url.Values{}
 	if strings.Contains(query, ":") {
-		data.Set("accountId", query)
+		data.Set("accountId", strings.Split(query, ":")[1])
 	} else {
 		data.Set("username", query)
 	}

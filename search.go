@@ -30,7 +30,7 @@ func addSearchQueryParams(query SearchQuery) *url.Values {
 	if query.CQLContext != "" {
 		data.Set("cqlcontext", query.CQLContext)
 	}
-	if query.IncludeArchivedSpaces != true {
+	if query.IncludeArchivedSpaces == true {
 		data.Set("includeArchivedSpaces", "true")
 	}
 	if query.Limit != 0 {
