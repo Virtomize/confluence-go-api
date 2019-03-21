@@ -260,6 +260,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			return
 		case "/wiki/rest/api/content/":
 			resp = Content{}
+		case "/wiki/rest/api/content/42":
+			resp = Content{}
 		case "/wiki/rest/api/user/42":
 			resp = User{}
 		case "/wiki/rest/api/search":
@@ -268,8 +270,20 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = History{}
 		case "/wiki/rest/api/content/42/label":
 			resp = Labels{}
+		case "/wiki/rest/api/content/42/label/test":
+			resp = Labels{}
 		case "/wiki/rest/api/content/42/notification/child-created":
 			resp = Watchers{}
+		case "/wiki/rest/api/content/42/child/page":
+			resp = Search{}
+		case "/wiki/rest/api/content/42/child/attachment":
+			resp = Search{}
+		case "/wiki/rest/api/content/42/child/comment":
+			resp = Search{}
+		case "/wiki/rest/api/content/42/child/history":
+			resp = Search{}
+		case "/wiki/rest/api/content/42/child/label":
+			resp = Search{}
 		default:
 			http.Error(w, "not found", http.StatusNotFound)
 			return

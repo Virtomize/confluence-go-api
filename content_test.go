@@ -27,6 +27,114 @@ func TestGetContentEndpoints(t *testing.T) {
 	assert.Equal(t, "/content/test/child", url.Path)
 }
 
+func TestContentGetter(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	assert.Nil(t, err)
+
+	c, err := api.GetContentByID("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Content{}, c)
+
+	s, err := api.GetContent(ContentQuery{})
+	assert.Nil(t, err)
+	assert.Equal(t, &Search{}, s)
+
+	s, err = api.GetChildPages("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Search{}, s)
+
+	s, err = api.GetComments("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Search{}, s)
+
+	s, err = api.GetAttachments("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Search{}, s)
+
+	h, err := api.GetHistory("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &History{}, h)
+
+	l, err := api.GetLabels("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Labels{}, l)
+
+	w, err := api.GetWatchers("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Watchers{}, w)
+}
+
+func TestAddLabels(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	assert.Nil(t, err)
+
+	l, err := api.AddLabels("42", &[]Label{})
+	assert.Nil(t, err)
+	assert.Equal(t, &Labels{}, l)
+}
+
+func TestDeleteLabels(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	assert.Nil(t, err)
+
+	l, err := api.DeleteLabel("42", "test")
+	assert.Nil(t, err)
+	assert.Equal(t, &Labels{}, l)
+}
+
+func TestContent(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	assert.Nil(t, err)
+
+	c, err := api.CreateContent(&Content{})
+	assert.Nil(t, err)
+	assert.Equal(t, &Content{}, c)
+
+	c, err = api.UpdateContent(&Content{})
+	assert.Nil(t, err)
+	assert.Equal(t, &Content{}, c)
+
+	c, err = api.DelContent("42")
+	assert.Nil(t, err)
+	assert.Equal(t, &Content{}, c)
+}
+
 func TestAddContentQueryParams(t *testing.T) {
-	// tbd
+	query := ContentQuery{
+		Expand:     []string{"foo", "bar"},
+		Limit:      1,
+		OrderBy:    "test",
+		PostingDay: "test",
+		SpaceKey:   "test",
+		Start:      1,
+		Status:     "test",
+		Title:      "test",
+		Trigger:    "test",
+		Type:       "test",
+	}
+
+	p := addContentQueryParams(query)
+
+	assert.Equal(t, p.Get("expand"), "foo,bar")
+	assert.Equal(t, p.Get("limit"), "1")
+	assert.Equal(t, p.Get("orderby"), "test")
+	assert.Equal(t, p.Get("postingDay"), "test")
+	assert.Equal(t, p.Get("spaceKey"), "test")
+	assert.Equal(t, p.Get("start"), "1")
+	assert.Equal(t, p.Get("status"), "test")
+	assert.Equal(t, p.Get("title"), "test")
+	assert.Equal(t, p.Get("trigger"), "test")
+	assert.Equal(t, p.Get("type"), "test")
 }
