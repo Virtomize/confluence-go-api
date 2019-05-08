@@ -292,6 +292,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = Search{}
 		case "/wiki/rest/api/content/42/child/label":
 			resp = Search{}
+		case "/wiki/rest/api/space":
+			resp = AllSpaces{}
 		default:
 			http.Error(w, "not found", http.StatusNotFound)
 			return
