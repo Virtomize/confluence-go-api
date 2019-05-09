@@ -218,3 +218,26 @@ func (a *API) SendWatcherRequest(ep *url.URL, method string) (*Watchers, error) 
 
 	return &watchers, nil
 }
+
+// SendAllSpacesRequest sends a request for all spaces
+func (a *API) SendAllSpacesRequest(ep *url.URL, method string) (*AllSpaces, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var allSpaces AllSpaces
+
+	err = json.Unmarshal(res, &allSpaces)
+	if err != nil {
+		return nil, err
+	}
+
+	return &allSpaces, nil
+}
