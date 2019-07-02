@@ -69,3 +69,9 @@ see [examples](https://github.com/cseeger-epages/confluence-go-api/tree/master/e
 You find the full [code documentation here](https://godoc.org/github.com/cseeger-epages/confluence-go-api).
 
 The Confluence API documentation [can be found here](https://docs.atlassian.com/ConfluenceServer/rest/6.9.1/).
+
+## Contribution
+
+Thank you for participating to this project.
+Please see our [Contribution Guidlines](https://github.com/cseeger-epages/confluence-go-api/blob/master/CONTRIBUTING.md) for more information.
+
