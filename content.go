@@ -32,6 +32,9 @@ func (a *API) GetContentByID(id string) (*Content, error) {
 	if err != nil {
 		return nil, err
 	}
+	data := url.Values{}
+	data.Set("expand", "storage.body")
+	ep.RawQuery = data.Encode()
 	return a.SendContentRequest(ep, "GET", nil)
 }
 
