@@ -27,14 +27,12 @@ func (a *API) getContentGenericEndpoint(id string, t string) (*url.URL, error) {
 }
 
 // GetContentByID querys content by id
-func (a *API) GetContentByID(id string) (*Content, error) {
+func (a *API) GetContentByID(id string, query ContentQuery) (*Content, error) {
 	ep, err := a.getContentIDEndpoint(id)
 	if err != nil {
 		return nil, err
 	}
-	data := url.Values{}
-	data.Set("expand", "storage.body")
-	ep.RawQuery = data.Encode()
+	ep.RawQuery = addContentQueryParams(query).Encode()
 	return a.SendContentRequest(ep, "GET", nil)
 }
 
