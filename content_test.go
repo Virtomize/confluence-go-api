@@ -34,7 +34,7 @@ func TestContentGetter(t *testing.T) {
 	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
 	assert.Nil(t, err)
 
-	c, err := api.GetContentByID("42")
+	c, err := api.GetContentByID("42", ContentQuery{})
 	assert.Nil(t, err)
 	assert.Equal(t, &Content{}, c)
 
