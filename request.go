@@ -25,15 +25,15 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	}
 	Debug(fmt.Sprintf("====== Response Status Code: %d ======", resp.StatusCode))
 
+	res, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+
+	Debug("====== Response Body ======")
+	Debug(string(res))
+	Debug("====== /Response Body ======")
+
 	switch resp.StatusCode {
 	case http.StatusOK, http.StatusCreated, http.StatusPartialContent:
-		res, err := ioutil.ReadAll(resp.Body)
-		resp.Body.Close()
-
-		Debug("====== Response Body ======")
-		Debug(string(res))
-		Debug("====== /Response Body ======")
-
 		if err != nil {
 			return nil, err
 		}
@@ -46,6 +46,8 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 		return nil, fmt.Errorf("service is not available: %s", resp.Status)
 	case http.StatusInternalServerError:
 		return nil, fmt.Errorf("internal server error: %s", resp.Status)
+	case http.StatusConflict:
+		return nil, fmt.Errorf("conflict: %s", resp.Status)
 	}
 
 	return nil, fmt.Errorf("unknown response status: %s", resp.Status)
