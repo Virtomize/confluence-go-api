@@ -26,6 +26,9 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	Debug(fmt.Sprintf("====== Response Status Code: %d ======", resp.StatusCode))
 
 	res, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
 	resp.Body.Close()
 
 	Debug("====== Response Body ======")
@@ -34,9 +37,6 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 
 	switch resp.StatusCode {
 	case http.StatusOK, http.StatusCreated, http.StatusPartialContent:
-		if err != nil {
-			return nil, err
-		}
 		return res, nil
 	case http.StatusNoContent, http.StatusResetContent:
 		return nil, nil
