@@ -1,6 +1,8 @@
 package goconfluence
 
 import (
+	"encoding/json"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -37,13 +39,30 @@ func (a *API) GetContentByID(id string, query ContentQuery) (*Content, error) {
 }
 
 // GetContent querys content using a query parameters
-func (a *API) GetContent(query ContentQuery) (*Search, error) {
+func (a *API) GetContent(query ContentQuery) (*ContentSearch, error) {
 	ep, err := a.getContentEndpoint()
 	if err != nil {
 		return nil, err
 	}
 	ep.RawQuery = addContentQueryParams(query).Encode()
-	return a.SendSearchRequest(ep, "GET")
+
+	req, err := http.NewRequest("GET", ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var search ContentSearch
+
+	err = json.Unmarshal(res, &search)
+	if err != nil {
+		return nil, err
+	}
+	return &search, nil
 }
 
 // GetChildPages returns a content list of child page objects

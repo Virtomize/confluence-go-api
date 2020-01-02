@@ -96,6 +96,14 @@ type Search struct {
 	Size    int       `json:"size,omitempty"`
 }
 
+// ContentSearch results
+type ContentSearch struct {
+	Results []Content `json:"results"`
+	Start   int       `json:"start,omitempty"`
+	Limit   int       `json:"limit,omitempty"`
+	Size    int       `json:"size,omitempty"`
+}
+
 // SearchQuery defines query parameters used for searchng
 // Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-search-get
 type SearchQuery struct {

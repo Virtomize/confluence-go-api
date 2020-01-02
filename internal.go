@@ -1,6 +1,7 @@
 package goconfluence
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net/http"
@@ -23,9 +24,22 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	a.endPoint = u
 	a.token = token
 	a.username = username
-	a.client = &http.Client{}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
+	}
+
+	a.client = &http.Client{Transport: tr}
 
 	return a, nil
+}
+
+// VerifyTLS to enable disable certificate checks
+func (a *API) VerifyTLS(set bool) {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: !set},
+	}
+	a.client = &http.Client{Transport: tr}
 }
 
 // DebugFlag is the global debugging variable
