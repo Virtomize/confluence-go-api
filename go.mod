@@ -1,6 +1,6 @@
 module github.com/cseeger-epages/confluence-go-api
 
-go 1.12
+go 1.13
 
 require (
 	github.com/magefile/mage v1.8.0
