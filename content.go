@@ -67,11 +67,41 @@ func (a *API) GetContent(query ContentQuery) (*ContentSearch, error) {
 
 // GetChildPages returns a content list of child page objects
 func (a *API) GetChildPages(id string) (*Search, error) {
+	var (
+		results      []Results
+		searchResult Search
+	)
+
 	ep, err := a.getContentChildEndpoint(id, "page")
 	if err != nil {
 		return nil, err
 	}
-	return a.SendSearchRequest(ep, "GET")
+
+	query := ContentQuery{
+		Start: 0,
+		Limit: 25,
+	}
+
+	searchResult.Start = 0
+
+	for {
+		ep.RawQuery = addContentQueryParams(query).Encode()
+		s, err := a.SendSearchRequest(ep, "GET")
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, s.Results...)
+		if len(s.Results) < query.Limit {
+			break
+		}
+		query.Start += 25
+	}
+
+	searchResult.Limit = len(results)
+	searchResult.Size = len(results)
+	searchResult.Results = results
+
+	return &searchResult, nil
 }
 
 // GetComments returns a list of comments belonging to id

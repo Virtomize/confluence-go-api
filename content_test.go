@@ -40,19 +40,19 @@ func TestContentGetter(t *testing.T) {
 
 	s, err := api.GetContent(ContentQuery{})
 	assert.Nil(t, err)
-	assert.Equal(t, &Search{}, s)
+	assert.Equal(t, &ContentSearch{}, s)
 
-	s, err = api.GetChildPages("42")
+	p, err := api.GetChildPages("42")
 	assert.Nil(t, err)
-	assert.Equal(t, &Search{}, s)
+	assert.Equal(t, &Search{}, p)
 
-	s, err = api.GetComments("42")
+	p, err = api.GetComments("42")
 	assert.Nil(t, err)
-	assert.Equal(t, &Search{}, s)
+	assert.Equal(t, &Search{}, p)
 
-	s, err = api.GetAttachments("42")
+	p, err = api.GetAttachments("42")
 	assert.Nil(t, err)
-	assert.Equal(t, &Search{}, s)
+	assert.Equal(t, &Search{}, p)
 
 	h, err := api.GetHistory("42")
 	assert.Nil(t, err)
