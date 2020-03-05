@@ -34,6 +34,22 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	return a, nil
 }
 
+// NewAPIWithClient creates a new API instance using an existing HTTP client.
+// Useful when using oauth or other authentication methods.
+func NewAPIWithClient(location string, client *http.Client)  (*API, error) {
+	u, err := url.ParseRequestURI(location)
+
+	if err != nil {
+		return nil, err
+	}
+
+	a := new(API)
+	a.endPoint = u
+	a.client = client
+
+	return a, nil
+}
+
 // VerifyTLS to enable disable certificate checks
 func (a *API) VerifyTLS(set bool) {
 	tr := &http.Transport{
