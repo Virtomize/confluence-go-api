@@ -18,7 +18,7 @@ func TestNewAPI(t *testing.T) {
 		{[]string{"test", "", "token"}, fmt.Errorf("url, username or token empty")},
 		{[]string{"test", "username", ""}, fmt.Errorf("url, username or token empty")},
 		{[]string{"https://test.test", "username", "token"}, nil},
-		{[]string{"test", "username", "token"}, fmt.Errorf("parse test: invalid URI for request")},
+		{[]string{"test", "username", "token"}, fmt.Errorf("parse \"test\": invalid URI for request")},
 	}
 
 	for _, test := range testValues {
