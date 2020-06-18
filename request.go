@@ -105,6 +105,9 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 
 	// add attachment to body
 	_, err = io.Copy(part, attachment)
+	if err != nil {
+		return nil, err
+	}
 
 	// add any other params
 	for key, val := range params {
