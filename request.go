@@ -122,7 +122,8 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 		return nil, err
 	}
 
-	req.Header.Add("X-Atlassian-Token", "nocheck") // required by api
+	req.Header.Set("X-Atlassian-Token", "nocheck") // required by api
+	req.Header.Set("Content-Type", writer.FormDataContentType())
 	// https://developer.atlassian.com/cloud/confluence/rest/#api-api-content-id-child-attachment-put
 
 	res, err := a.Request(req)
