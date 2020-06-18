@@ -97,7 +97,7 @@ func TestSendContentAttachmentRequest(t *testing.T) {
 	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
 	assert.Nil(t, err)
 
-	ep, err := api.getContentEndpoint()
+	ep, err := api.getContentChildEndpoint("43", "attachment")
 	assert.Nil(t, err)
 
 	r1 := strings.NewReader("some test file attachment, normally this would come from a file")
