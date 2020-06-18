@@ -3,8 +3,10 @@ package goconfluence
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -78,6 +80,42 @@ func TestSendContentRequest(t *testing.T) {
 			assert.Equal(t, test.Error.Error(), err.Error)
 		}
 		assert.Equal(t, test.Body, b)
+	}
+}
+
+type testValuesAttachmentRequest struct {
+	AttachmentName string
+	Attachment     io.Reader
+	Params         map[string]string
+	Error          error
+}
+
+func TestSendContentAttachmentRequest(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	assert.Nil(t, err)
+
+	ep, err := api.getContentEndpoint()
+	assert.Nil(t, err)
+
+	r1 := strings.NewReader("some test file attachment, normally this would come from a file")
+	p1 := map[string]string{"comment": "some witty comment"}
+	r2 := strings.NewReader("an even better attachment\nwith new lines in it")
+	p2 := map[string]string{"comment": "some other witty comment"}
+	testValues := []testValuesAttachmentRequest{
+		{"my awesome attachment", r1, p1, nil},
+		{"is awesome", r2, p2, nil},
+	}
+
+	for _, test := range testValues {
+		_, err := api.SendContentAttachmentRequest(ep, test.AttachmentName, test.Attachment, test.Params)
+		if test.Error == nil {
+			assert.Nil(t, err)
+		} else {
+			assert.Equal(t, test.Error.Error(), err.Error)
+		}
 	}
 }
 
@@ -288,6 +326,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = Search{}
 		case "/wiki/rest/api/content/42/child/attachment":
 			resp = Search{}
+		case "/wiki/rest/api/content/43/child/attachment":
+			resp = Content{}
 		case "/wiki/rest/api/content/42/child/comment":
 			resp = Search{}
 		case "/wiki/rest/api/content/42/child/history":
