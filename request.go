@@ -93,7 +93,7 @@ func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Conte
 }
 
 // SendContentAttachmentRequest sends a multipart/form-data attachment create/update request to a content
-func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, attachment io.Reader, params map[string]string) (*Content, error) {
+func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, attachment io.Reader, params map[string]string) (*Search, error) {
 	// setup body for mulitpart file, adding minorEdit option
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -131,14 +131,14 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 		return nil, err
 	}
 
-	var content Content
+	var search Search
 
-	err = json.Unmarshal(res, &content)
+	err = json.Unmarshal(res, &search)
 	if err != nil {
 		return nil, err
 	}
 
-	return &content, nil
+	return &search, nil
 }
 
 // SendUserRequest sends user related requests

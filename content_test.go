@@ -103,9 +103,9 @@ func TestContent(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, &Content{}, c)
 
-	c, err = api.UploadAttachment("43", "attachmentName", strings.NewReader("attachment content"))
+	s, err := api.UploadAttachment("43", "attachmentName", strings.NewReader("attachment content"))
 	assert.Nil(t, err)
-	assert.Equal(t, &Content{}, c)
+	assert.Equal(t, &Search{}, s)
 
 	c, err = api.UpdateContent(&Content{})
 	assert.Nil(t, err)
