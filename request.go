@@ -1,10 +1,12 @@
 package goconfluence
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"strings"
@@ -88,6 +90,58 @@ func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Conte
 	}
 
 	return &content, nil
+}
+
+// SendContentAttachmentRequest sends a multipart/form-data attachment create/update request to a content
+func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, attachment io.Reader, params map[string]string) (*Search, error) {
+	// setup body for mulitpart file, adding minorEdit option
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	writer.WriteField("minorEdit", "true")
+	part, err := writer.CreateFormFile("file", attachmentName)
+	if err != nil {
+		return nil, err
+	}
+
+	// add attachment to body
+	_, err = io.Copy(part, attachment)
+	if err != nil {
+		return nil, err
+	}
+
+	// add any other params
+	for key, val := range params {
+		_ = writer.WriteField(key, val)
+	}
+
+	//clean up multipart form writer
+	err = writer.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", ep.String(), body) // will always be put
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("X-Atlassian-Token", "nocheck") // required by api
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	// https://developer.atlassian.com/cloud/confluence/rest/#api-api-content-id-child-attachment-put
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var search Search
+
+	err = json.Unmarshal(res, &search)
+	if err != nil {
+		return nil, err
+	}
+
+	return &search, nil
 }
 
 // SendUserRequest sends user related requests

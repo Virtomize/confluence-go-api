@@ -1,6 +1,7 @@
 package goconfluence
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -101,6 +102,10 @@ func TestContent(t *testing.T) {
 	c, err := api.CreateContent(&Content{})
 	assert.Nil(t, err)
 	assert.Equal(t, &Content{}, c)
+
+	s, err := api.UploadAttachment("43", "attachmentName", strings.NewReader("attachment content"))
+	assert.Nil(t, err)
+	assert.Equal(t, &Search{}, s)
 
 	c, err = api.UpdateContent(&Content{})
 	assert.Nil(t, err)

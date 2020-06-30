@@ -2,6 +2,7 @@ package goconfluence
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -183,6 +184,17 @@ func (a *API) UpdateContent(c *Content) (*Content, error) {
 		return nil, err
 	}
 	return a.SendContentRequest(ep, "PUT", c)
+}
+
+// UploadAttachment uploaded the given reader as an attachment to the
+// page with the given id, if the attachment exists it will be updated with
+// a new version number
+func (a *API) UploadAttachment(id string, attachmentName string, attachment io.Reader) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "attachment")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentAttachmentRequest(ep, attachmentName, attachment, map[string]string{})
 }
 
 // DelContent deletes content by id
