@@ -120,7 +120,7 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", ep.String(), body) // will always be put
+	req, err := http.NewRequest("POST", ep.String(), body) // will always be put
 	if err != nil {
 		return nil, err
 	}

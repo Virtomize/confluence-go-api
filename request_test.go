@@ -326,6 +326,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = Search{}
 		case "/wiki/rest/api/content/42/child/attachment":
 			resp = Search{}
+		case "/wiki/rest/api/content/43/child/attachment/123/data":
+			resp = Search{}
 		case "/wiki/rest/api/content/43/child/attachment":
 			resp = Content{}
 		case "/wiki/rest/api/content/42/child/comment":
