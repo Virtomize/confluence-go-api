@@ -187,10 +187,19 @@ func (a *API) UpdateContent(c *Content) (*Content, error) {
 }
 
 // UploadAttachment uploaded the given reader as an attachment to the
-// page with the given id, if the attachment exists it will be updated with
+// page with the given id. The existing attachment won't be updated with
 // a new version number
 func (a *API) UploadAttachment(id string, attachmentName string, attachment io.Reader) (*Search, error) {
 	ep, err := a.getContentChildEndpoint(id, "attachment")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentAttachmentRequest(ep, attachmentName, attachment, map[string]string{})
+}
+
+// UpdateAttachment update the attachment with an attachmentId on a page with an id to a new version
+func (a *API) UpdateAttachment(id string, attachmentName string, attachmentId string, attachment io.Reader) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "attachment/"+attachmentId+"/data")
 	if err != nil {
 		return nil, err
 	}
