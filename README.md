@@ -1,5 +1,6 @@
 # confluence-go-api
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBXHBYFU44T5W&source=url)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-green.svg)](https://godoc.org/github.com/cseeger-epages/confluence-go-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cseeger-epages/confluence-go-api)](https://goreportcard.com/report/github.com/cseeger-epages/confluence-go-api)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cseeger-epages/confluence-go-api/blob/master/LICENSE)
