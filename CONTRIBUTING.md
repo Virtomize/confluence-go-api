@@ -1,4 +1,4 @@
-# Contributing to Mail2Most
+# Contributing to confluence-go-api
 
 - [Code of Conduct](#code-fo-conduct)
 - [Issues](#issues)
@@ -7,7 +7,7 @@
 
 ## [Code of Conduct](https://github.com/virtomize/confluence-go-api/blob/master/CODE_OF_CONDUCT.md)
 
-The Mail2Most project follows the [Contributor Covenant Code of Conduct](https://github.com/virtomize/confluence-go-api/blob/master/CODE_OF_CONDUCT.md)
+The confluence-go-api project follows the [Contributor Covenant Code of Conduct](https://github.com/virtomize/confluence-go-api/blob/master/CODE_OF_CONDUCT.md)
 
 ## Issues
 
