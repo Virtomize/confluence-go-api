@@ -11,8 +11,8 @@ func TestSearchQueryParams(t *testing.T) {
 		CQL:                   "test",
 		CQLContext:            "test",
 		IncludeArchivedSpaces: true,
-		Limit: 1,
-		Start: 1,
+		Limit:                 1,
+		Start:                 1,
 	}
 	p := addSearchQueryParams(query)
 	assert.Equal(t, p.Get("cql"), "test")

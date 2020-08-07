@@ -36,7 +36,7 @@ func NewAPI(location string, username string, token string) (*API, error) {
 
 // NewAPIWithClient creates a new API instance using an existing HTTP client.
 // Useful when using oauth or other authentication methods.
-func NewAPIWithClient(location string, client *http.Client)  (*API, error) {
+func NewAPIWithClient(location string, client *http.Client) (*API, error) {
 	u, err := url.ParseRequestURI(location)
 
 	if err != nil {

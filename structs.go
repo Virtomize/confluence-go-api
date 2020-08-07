@@ -83,6 +83,29 @@ type ContentQuery struct {
 	Type       string // page, blogpost
 }
 
+type Template struct {
+	ID          string `json:"templateId,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Type        string `json:"templateType,omitempty"`
+	Description string `json:"description"`
+	Body        Body   `json:"body"`
+	Space       Space  `json:"space"`
+}
+
+type TemplateQuery struct {
+	SpaceKey string
+	Start    int // page start
+	Limit    int // page limit
+	Expand   []string
+}
+
+type TemplateSearch struct {
+	Results []Template `json:"results"`
+	Start   int        `json:"start,omitempty"`
+	Limit   int        `json:"limit,omitempty"`
+	Size    int        `json:"size,omitempty"`
+}
+
 // User defines user informations
 type User struct {
 	Type        string `json:"type"`
