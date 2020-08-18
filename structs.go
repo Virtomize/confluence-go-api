@@ -33,6 +33,7 @@ type Content struct {
 	Body      Body       `json:"body"`
 	Version   Version    `json:"version"`
 	Space     Space      `json:"space"`
+	History   History    `json:"history"`
 }
 
 // Ancestor defines ancestors to create sub pages
