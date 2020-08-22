@@ -53,10 +53,15 @@ type Storage struct {
 	Representation string `json:"representation"`
 }
 
+type VersionResult struct {
+	Result []Version `json:"results"`
+}
+
 // Version defines the content version number
 // the version number is used for updating content
 type Version struct {
 	Number int `json:"number"`
+	By User `json:"by"`
 }
 
 // Space holds the Space information of a Content Page

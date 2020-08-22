@@ -215,6 +215,16 @@ func (a *API) DelContent(id string) (*Content, error) {
 	return a.SendContentRequest(ep, "DELETE", nil)
 }
 
+// ContentVersion gets all versions of this content
+func (a *API) GetContentVersion(id string) (*VersionResult, error) {
+	ep, err := a.getContentGenericEndpoint(id, "version")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentVersionRequest(ep, "GET")
+}
+
+
 // addContentQueryParams adds the defined query parameters
 func addContentQueryParams(query ContentQuery) *url.Values {
 

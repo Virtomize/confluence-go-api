@@ -297,3 +297,25 @@ func (a *API) SendAllSpacesRequest(ep *url.URL, method string) (*AllSpaces, erro
 
 	return &allSpaces, nil
 }
+
+func (a *API) SendContentVersionRequest(ep *url.URL, method string) (*VersionResult, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var versionResult VersionResult
+
+	err = json.Unmarshal(res, &versionResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &versionResult, nil
+}
