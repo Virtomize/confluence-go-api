@@ -20,6 +20,11 @@ is a [Confluence](https://www.atlassian.com/software/confluence) REST API client
 
 If you miss some feature implementation, feel free to open an issue or send pull requests. I will take look as soon as possible.
 
+## Donation
+If this project helps you, feel free to give us a cup of coffee :).
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBXHBYFU44T5W&source=url)
+
 ## Installation
 
 If you already installed GO on your system and configured it properly than its simply:
