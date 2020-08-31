@@ -14,11 +14,13 @@ func main() {
 	}
 
 	// get content by content id
-	c, err := api.GetContentByID("12345678")
+	c, err := api.GetContentByID("12345678", goconfluence.ContentQuery{
+		SpaceKey: "IM",
+		Expand:   []string{"body.storage", "version"},
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	fmt.Printf("%+v\n", c)
 
 	//get content by query
