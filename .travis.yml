@@ -24,12 +24,12 @@ before_install:
 
 script: 
   - golint `go list`
-  - golint ./examples/*.go
+  - golint ./examples/*/*.go
   - go test -v -race `go list`
   - go vet -v `go list`
   - gocyclo *.go
-  - gocyclo ./examples/*.go
+  - gocyclo ./examples/*/*.go
   - ineffassign *.go
-  - ineffassign ./examples/*.go
+  - ineffassign ./examples/*/*.go
   - misspell *.go
-  - misspell ./examples/*.go
+  - misspell ./examples/*/*.go
