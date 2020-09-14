@@ -34,6 +34,7 @@ type Content struct {
 	Version   Version    `json:"version"`
 	Space     Space      `json:"space"`
 	History   History    `json:"history"`
+	Links     Links      `json:"_links"`
 }
 
 // Ancestor defines ancestors to create sub pages
@@ -60,8 +61,8 @@ type VersionResult struct {
 // Version defines the content version number
 // the version number is used for updating content
 type Version struct {
-	Number int `json:"number"`
-	By User `json:"by"`
+	Number int  `json:"number"`
+	By     User `json:"by"`
 }
 
 // Space holds the Space information of a Content Page
@@ -153,6 +154,11 @@ type History struct {
 	Latest      bool        `json:"latest"`
 	CreatedBy   User        `json:"createdBy"`
 	CreatedDate string      `json:"createdDate"`
+}
+
+type Links struct {
+	Base   string `json:"base"`
+	TinyUI string `json:"tinyui"`
 }
 
 // LastUpdated  contains information about the last update
