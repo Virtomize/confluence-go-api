@@ -224,7 +224,6 @@ func (a *API) GetContentVersion(id string) (*VersionResult, error) {
 	return a.SendContentVersionRequest(ep, "GET")
 }
 
-
 // addContentQueryParams adds the defined query parameters
 func addContentQueryParams(query ContentQuery) *url.Values {
 
