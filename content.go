@@ -222,6 +222,10 @@ func addContentQueryParams(query ContentQuery) *url.Values {
 	if len(query.Expand) != 0 {
 		data.Set("expand", strings.Join(query.Expand, ","))
 	}
+	//get specific version
+	if query.Version != 0 {
+		data.Set("version", strconv.Itoa(query.Version))
+	}
 	if query.Limit != 0 {
 		data.Set("limit", strconv.Itoa(query.Limit))
 	}
