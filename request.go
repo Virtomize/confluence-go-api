@@ -15,7 +15,11 @@ import (
 // Request implements the basic Request function
 func (a *API) Request(req *http.Request) ([]byte, error) {
 	req.Header.Add("Accept", "application/json, */*")
-	a.Auth(req)
+	//Supports unauthenticated access to confluence:
+	//if username and token are not set, do not add authorization header
+	if a.username != "" && a.token != "" {
+		a.Auth(req)
+	}
 
 	Debug("====== Request ======")
 	Debug(req)
