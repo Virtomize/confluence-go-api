@@ -83,6 +83,8 @@ type ContentQuery struct {
 	Title      string // required for page
 	Trigger    string // viewed
 	Type       string // page, blogpost
+	Version    int    //version number when not lastest
+
 }
 
 // User defines user informations
