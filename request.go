@@ -15,11 +15,8 @@ import (
 // Request implements the basic Request function
 func (a *API) Request(req *http.Request) ([]byte, error) {
 	req.Header.Add("Accept", "application/json, */*")
-	//Supports unauthenticated access to confluence:
-	//if username and token are not set, do not add authorization header
-	if a.username != "" && a.token != "" {
-		a.Auth(req)
-	}
+
+	a.Auth(req)
 
 	Debug("====== Request ======")
 	Debug(req)
@@ -300,4 +297,27 @@ func (a *API) SendAllSpacesRequest(ep *url.URL, method string) (*AllSpaces, erro
 	}
 
 	return &allSpaces, nil
+}
+
+// SendContentVersionRequest requests a version of a specific content
+func (a *API) SendContentVersionRequest(ep *url.URL, method string) (*ContentVersionResult, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var versionResult ContentVersionResult
+
+	err = json.Unmarshal(res, &versionResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &versionResult, nil
 }

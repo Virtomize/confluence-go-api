@@ -10,8 +10,8 @@ import (
 
 // NewAPI implements API constructor
 func NewAPI(location string, username string, token string) (*API, error) {
-	if len(location) == 0 || len(username) == 0 || len(token) == 0 {
-		return nil, errors.New("url, username or token empty")
+	if len(location) == 0 {
+		return nil, errors.New("url empty")
 	}
 
 	u, err := url.ParseRequestURI(location)
@@ -36,7 +36,7 @@ func NewAPI(location string, username string, token string) (*API, error) {
 
 // NewAPIWithClient creates a new API instance using an existing HTTP client.
 // Useful when using oauth or other authentication methods.
-func NewAPIWithClient(location string, client *http.Client)  (*API, error) {
+func NewAPIWithClient(location string, client *http.Client) (*API, error) {
 	u, err := url.ParseRequestURI(location)
 
 	if err != nil {

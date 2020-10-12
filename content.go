@@ -197,9 +197,9 @@ func (a *API) UploadAttachment(id string, attachmentName string, attachment io.R
 	return a.SendContentAttachmentRequest(ep, attachmentName, attachment, map[string]string{})
 }
 
-// UpdateAttachment update the attachment with an attachmentId on a page with an id to a new version
-func (a *API) UpdateAttachment(id string, attachmentName string, attachmentId string, attachment io.Reader) (*Search, error) {
-	ep, err := a.getContentChildEndpoint(id, "attachment/"+attachmentId+"/data")
+// UpdateAttachment update the attachment with an attachmentID on a page with an id to a new version
+func (a *API) UpdateAttachment(id string, attachmentName string, attachmentID string, attachment io.Reader) (*Search, error) {
+	ep, err := a.getContentChildEndpoint(id, "attachment/"+attachmentID+"/data")
 	if err != nil {
 		return nil, err
 	}
@@ -213,6 +213,15 @@ func (a *API) DelContent(id string) (*Content, error) {
 		return nil, err
 	}
 	return a.SendContentRequest(ep, "DELETE", nil)
+}
+
+// GetContentVersion gets all versions of this content
+func (a *API) GetContentVersion(id string) (*ContentVersionResult, error) {
+	ep, err := a.getContentGenericEndpoint(id, "version")
+	if err != nil {
+		return nil, err
+	}
+	return a.SendContentVersionRequest(ep, "GET")
 }
 
 // addContentQueryParams adds the defined query parameters
