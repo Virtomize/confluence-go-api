@@ -13,6 +13,7 @@ is a [Confluence](https://www.atlassian.com/software/confluence) REST API client
 ## Supportet Features
 
 - get, update, delete content
+- get, update, delete content templates and blueprints
 - get comments, attachments, children of content objects, history, watchers
 - get, add ,delete labels
 - get user information
