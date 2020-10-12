@@ -33,6 +33,14 @@ type Content struct {
 	Body      Body       `json:"body"`
 	Version   Version    `json:"version"`
 	Space     Space      `json:"space"`
+	History   History    `json:"history"`
+	Links     Links      `json:"_links"`
+}
+
+// Links contains link information
+type Links struct {
+	Base   string `json:"base"`
+	TinyUI string `json:"tinyui"`
 }
 
 // Ancestor defines ancestors to create sub pages
@@ -42,8 +50,9 @@ type Ancestor struct {
 
 // Body holds the storage information
 type Body struct {
-	Storage Storage  `json:"storage"`
-	View    *Storage `json:"view,omitempty"`
+	Storage    Storage  `json:"storage"`
+	View       *Storage `json:"view,omitempty"`
+	ExportView Storage  `json:"export_view"`
 }
 
 // Storage defines the storage information
@@ -58,6 +67,7 @@ type Version struct {
 	Number    int    `json:"number"`
 	MinorEdit bool   `json:"minorEdit"`
 	Message   string `json:"message,omitempty"`
+	By        User   `json:"by"`
 }
 
 // Space holds the Space information of a Content Page
@@ -192,4 +202,35 @@ type AllSpacesQuery struct {
 	Start            int    // page start
 	Status           string // current, archived
 	Type             string // global, personal
+}
+
+// ContentVersionResult contains the version results
+type ContentVersionResult struct {
+	Result []Version `json:"results"`
+}
+
+// Template contains blueprint data
+type Template struct {
+	ID          string `json:"templateId,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Type        string `json:"templateType,omitempty"`
+	Description string `json:"description"`
+	Body        Body   `json:"body"`
+	Space       Space  `json:"space"`
+}
+
+// TemplateQuery defines the query parameters
+type TemplateQuery struct {
+	SpaceKey string
+	Start    int // page start
+	Limit    int // page limit
+	Expand   []string
+}
+
+// TemplateSearch contains blueprint search results
+type TemplateSearch struct {
+	Results []Template `json:"results"`
+	Start   int        `json:"start,omitempty"`
+	Limit   int        `json:"limit,omitempty"`
+	Size    int        `json:"size,omitempty"`
 }

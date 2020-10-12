@@ -14,9 +14,8 @@ type apiTestValue struct {
 
 func TestNewAPI(t *testing.T) {
 	testValues := []apiTestValue{
-		{[]string{"", "username", "token"}, fmt.Errorf("url, username or token empty")},
-		{[]string{"test", "", "token"}, fmt.Errorf("url, username or token empty")},
-		{[]string{"test", "username", ""}, fmt.Errorf("url, username or token empty")},
+		{[]string{"", "username", "token"}, fmt.Errorf("url empty")},
+		{[]string{"https://test.test", "", ""}, nil},
 		{[]string{"https://test.test", "username", "token"}, nil},
 		{[]string{"test", "username", "token"}, fmt.Errorf("parse \"test\": invalid URI for request")},
 	}

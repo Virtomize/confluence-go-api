@@ -33,3 +33,17 @@ func TestAuth(t *testing.T) {
 	assert.Equal(t, "username", auth[0])
 	assert.Equal(t, "token", auth[1])
 }
+
+func TestEmptyAuth(t *testing.T) {
+
+	req := httptest.NewRequest("POST", "https://test.test", nil)
+
+	api, err := NewAPI("https://test.test", "", "")
+
+	assert.Nil(t, err)
+	assert.Empty(t, req.Header)
+
+	api.Auth(req)
+	h := req.Header.Get("Authorization")
+	assert.Empty(t, h)
+}

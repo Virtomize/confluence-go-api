@@ -338,6 +338,10 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = Search{}
 		case "/wiki/rest/api/space":
 			resp = AllSpaces{}
+		case "/wiki/rest/api/template/blueprint":
+			resp = TemplateSearch{}
+		case "/wiki/rest/api/template/page":
+			resp = TemplateSearch{}
 		default:
 			http.Error(w, "not found", http.StatusNotFound)
 			return
