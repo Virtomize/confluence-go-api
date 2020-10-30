@@ -29,8 +29,8 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 		}
 		fmt.Println(string(requestDump))
 	}
-	Debug("====== Request Body ======")
-x	Debug("====== /Request ======")
+	Debug("====== /Request Body ======")
+	Debug("====== /Request ======")
 
 	resp, err := a.client.Do(req)
 	if err != nil {
