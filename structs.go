@@ -26,15 +26,15 @@ type Results struct {
 // Content specifies content properties
 type Content struct {
 	ID        string     `json:"id,omitempty"`
-	Type      string     `json:"type,omitempty"`
+	Type      string     `json:"type"`
 	Status    string     `json:"status,omitempty"`
-	Title     string     `json:"title,omitempty"`
-	Ancestors []Ancestor `json:"ancestors"`
+	Title     string     `json:"title"`
+	Ancestors []Ancestor `json:"ancestors,omitempty"`
 	Body      Body       `json:"body"`
-	Version   Version    `json:"version"`
+	Version   *Version   `json:"version,omitempty"`
 	Space     Space      `json:"space"`
-	History   History    `json:"history"`
-	Links     Links      `json:"_links"`
+	History   *History   `json:"history,omitempty"`
+	Links     *Links     `json:"_links,omitempty"`
 }
 
 // Links contains link information
@@ -52,7 +52,7 @@ type Ancestor struct {
 type Body struct {
 	Storage    Storage  `json:"storage"`
 	View       *Storage `json:"view,omitempty"`
-	ExportView Storage  `json:"export_view"`
+	ExportView *Storage `json:"export_view,omitempty"`
 }
 
 // Storage defines the storage information

@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"strings"
 )
@@ -20,6 +21,15 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 
 	Debug("====== Request ======")
 	Debug(req)
+	Debug("====== Request Body ======")
+	if DebugFlag {
+		requestDump, err := httputil.DumpRequest(req, true)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(string(requestDump))
+	}
+	Debug("====== /Request Body ======")
 	Debug("====== /Request ======")
 
 	resp, err := a.client.Do(req)
