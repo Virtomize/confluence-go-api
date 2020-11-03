@@ -34,7 +34,7 @@ If you already installed GO on your system and configured it properly than its s
 go get github.com/virtomize/confluence-go-api
 ```
 
-If not follow [these instructions](https://nats.io/documentation/tutorials/go-install/).
+If not follow [these instructions](https://golang.org/doc/install)
 
 ## Usage
 
