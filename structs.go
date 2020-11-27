@@ -50,9 +50,14 @@ type Ancestor struct {
 
 // Body holds the storage information
 type Body struct {
-	Storage    Storage  `json:"storage"`
+	Storage Storage  `json:"storage"`
+	View    *Storage `json:"view,omitempty"`
+}
+
+// BodyExportView holds the export_view information
+type BodyExportView struct {
+	ExportView *Storage `json:"export_view"`
 	View       *Storage `json:"view,omitempty"`
-	ExportView *Storage `json:"export_view,omitempty"`
 }
 
 // Storage defines the storage information
