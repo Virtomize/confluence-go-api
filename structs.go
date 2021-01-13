@@ -72,7 +72,7 @@ type Version struct {
 	Number    int    `json:"number"`
 	MinorEdit bool   `json:"minorEdit"`
 	Message   string `json:"message,omitempty"`
-	By        User   `json:"by,omitempty"`
+	By        *User  `json:"by,omitempty"`
 }
 
 // Space holds the Space information of a Content Page
