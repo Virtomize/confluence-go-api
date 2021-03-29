@@ -3,6 +3,7 @@ package goconfluence
 import (
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // getContentEndpoint creates the correct api endpoint by given id
@@ -38,6 +39,9 @@ func addSearchQueryParams(query SearchQuery) *url.Values {
 	}
 	if query.Start != 0 {
 		data.Set("start", strconv.Itoa(query.Start))
+	}
+	if len(query.Expand) != 0 {
+		data.Set("expand", strings.Join(query.Expand, ","))
 	}
 	return &data
 }

@@ -17,7 +17,10 @@ import (
 func (a *API) Request(req *http.Request) ([]byte, error) {
 	req.Header.Add("Accept", "application/json, */*")
 
-	a.Auth(req)
+	// only auth if we can auth
+	if (a.username != "") || (a.token != "") {
+		a.Auth(req)
+	}
 
 	Debug("====== Request ======")
 	Debug(req)
