@@ -5,14 +5,24 @@ import (
 	"strings"
 )
 
-// getContentEndpoint creates the correct api endpoint by given id
+// getUserEndpoint creates the correct api endpoint by given id
 func (a *API) getUserEndpoint(id string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/user/" + id)
+	return url.ParseRequestURI(a.endPoint.String() + "/user?accountId=" + id)
+}
+
+// getCurrentUserEndpoint creates the correct api endpoint by given id
+func (a *API) getCurrentUserEndpoint() (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/user/current")
+}
+
+// getAnonymousUserEndpoint creates the correct api endpoint by given id
+func (a *API) getAnonymousUserEndpoint() (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/user/anonymous")
 }
 
 // CurrentUser return current user information
 func (a *API) CurrentUser() (*User, error) {
-	ep, err := a.getUserEndpoint("current")
+	ep, err := a.getCurrentUserEndpoint()
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +31,7 @@ func (a *API) CurrentUser() (*User, error) {
 
 // AnonymousUser return user information for anonymous user
 func (a *API) AnonymousUser() (*User, error) {
-	ep, err := a.getUserEndpoint("anonymous")
+	ep, err := a.getAnonymousUserEndpoint()
 	if err != nil {
 		return nil, err
 	}
