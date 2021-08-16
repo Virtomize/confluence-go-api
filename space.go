@@ -6,6 +6,27 @@ import (
 	"strings"
 )
 
+// AllSpaces results
+type AllSpaces struct {
+	Results []Space `json:"results"`
+	Start   int     `json:"start,omitempty"`
+	Limit   int     `json:"limit,omitempty"`
+	Size    int     `json:"size,omitempty"`
+}
+
+// AllSpacesQuery defines the query parameters
+// Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-space-get
+type AllSpacesQuery struct {
+	Expand           []string
+	Favourite        bool   // Filter the results to the favourite spaces of the user specified by favouriteUserKey
+	FavouriteUserKey string // The userKey of the user, whose favourite spaces are used to filter the results when using the favourite parameter. Leave blank for the current user
+	Limit            int    // page limit
+	SpaceKey         string
+	Start            int    // page start
+	Status           string // current, archived
+	Type             string // global, personal
+}
+
 // getSpaceEndpoint creates the correct api endpoint
 func (a *API) getSpaceEndpoint() (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/space")

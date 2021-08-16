@@ -5,6 +5,15 @@ import (
 	"strings"
 )
 
+// User defines user informations
+type User struct {
+	Type        string `json:"type"`
+	Username    string `json:"username"`
+	UserKey     string `json:"userKey"`
+	AccountID   string `json:"accountId"`
+	DisplayName string `json:"displayName"`
+}
+
 // getUserEndpoint creates the correct api endpoint by given id
 func (a *API) getUserEndpoint(id string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/user?accountId=" + id)

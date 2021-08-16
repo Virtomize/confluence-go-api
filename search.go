@@ -6,6 +6,27 @@ import (
 	"strings"
 )
 
+// Search results
+type Search struct {
+	Results   []Results `json:"results"`
+	Start     int       `json:"start,omitempty"`
+	Limit     int       `json:"limit,omitempty"`
+	Size      int       `json:"size,omitempty"`
+	ID        string    `json:"id,omitempty"`
+	TotalSize int       `json:"totalSize, omitempty"`
+}
+
+// SearchQuery defines query parameters used for searchng
+// Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-search-get
+type SearchQuery struct {
+	CQL                   string
+	CQLContext            string
+	IncludeArchivedSpaces bool
+	Limit                 int
+	Start                 int
+	Expand                []string
+}
+
 // getContentEndpoint creates the correct api endpoint by given id
 func (a *API) getSearchEndpoint() (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/search")
