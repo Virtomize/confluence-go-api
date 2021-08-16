@@ -9,6 +9,78 @@ import (
 	"strings"
 )
 
+// Results array
+type Results struct {
+	ID      string  `json:"id,omitempty"`
+	Type    string  `json:"type,omitempty"`
+	Status  string  `json:"status,omitempty"`
+	Content Content `json:"content"`
+	Excerpt string  `json:"excerpt,omitempty"`
+	Title   string  `json:"title,omitempty"`
+	URL     string  `json:"url,omitempty"`
+}
+
+// Content specifies content properties
+type Content struct {
+	ID        string     `json:"id,omitempty"`
+	Type      string     `json:"type"`
+	Status    string     `json:"status,omitempty"`
+	Title     string     `json:"title"`
+	Ancestors []Ancestor `json:"ancestors,omitempty"`
+	Body      Body       `json:"body"`
+	Version   *Version   `json:"version,omitempty"`
+	Space     Space      `json:"space"`
+	History   *History   `json:"history,omitempty"`
+	Links     *Links     `json:"_links,omitempty"`
+}
+
+// Links contains link information
+type Links struct {
+	Base   string `json:"base"`
+	TinyUI string `json:"tinyui"`
+}
+
+// Ancestor defines ancestors to create sub pages
+type Ancestor struct {
+	ID string `json:"id"`
+}
+
+// Body holds the storage information
+type Body struct {
+	Storage Storage  `json:"storage"`
+	View    *Storage `json:"view,omitempty"`
+}
+
+// BodyExportView holds the export_view information
+type BodyExportView struct {
+	ExportView *Storage `json:"export_view"`
+	View       *Storage `json:"view,omitempty"`
+}
+
+// Storage defines the storage information
+type Storage struct {
+	Value          string `json:"value"`
+	Representation string `json:"representation"`
+}
+
+// Version defines the content version number
+// the version number is used for updating content
+type Version struct {
+	Number    int    `json:"number"`
+	MinorEdit bool   `json:"minorEdit"`
+	Message   string `json:"message,omitempty"`
+	By        *User  `json:"by,omitempty"`
+}
+
+// Space holds the Space information of a Content Page
+type Space struct {
+	ID     int    `json:"id,omitempty"`
+	Key    string `json:"key,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Type   string `json:"type,omitempty"`
+	Status string `json:"status,omitempty"`
+}
+
 // getContentIDEndpoint creates the correct api endpoint by given id
 func (a *API) getContentIDEndpoint(id string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id)
@@ -29,6 +101,24 @@ func (a *API) getContentGenericEndpoint(id string, t string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/" + t)
 }
 
+// ContentQuery defines the query parameters
+// used for content related searching
+// Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-content-get
+type ContentQuery struct {
+	Expand     []string
+	Limit      int    // page limit
+	OrderBy    string // fieldpath asc/desc e.g: "history.createdDate desc"
+	PostingDay string // required for blogpost type Format: yyyy-mm-dd
+	SpaceKey   string
+	Start      int    // page start
+	Status     string // current, trashed, draft, any
+	Title      string // required for page
+	Trigger    string // viewed
+	Type       string // page, blogpost
+	Version    int    //version number when not lastest
+
+}
+
 // GetContentByID querys content by id
 func (a *API) GetContentByID(id string, query ContentQuery) (*Content, error) {
 	ep, err := a.getContentIDEndpoint(id)
@@ -37,6 +127,14 @@ func (a *API) GetContentByID(id string, query ContentQuery) (*Content, error) {
 	}
 	ep.RawQuery = addContentQueryParams(query).Encode()
 	return a.SendContentRequest(ep, "GET", nil)
+}
+
+// ContentSearch results
+type ContentSearch struct {
+	Results []Content `json:"results"`
+	Start   int       `json:"start,omitempty"`
+	Limit   int       `json:"limit,omitempty"`
+	Size    int       `json:"size,omitempty"`
 }
 
 // GetContent querys content using a query parameters
@@ -123,6 +221,26 @@ func (a *API) GetAttachments(id string) (*Search, error) {
 	return a.SendSearchRequest(ep, "GET")
 }
 
+// History contains object history information
+type History struct {
+	LastUpdated LastUpdated `json:"lastUpdated"`
+	Latest      bool        `json:"latest"`
+	CreatedBy   User        `json:"createdBy"`
+	CreatedDate string      `json:"createdDate"`
+}
+
+// LastUpdated  contains information about the last update
+type LastUpdated struct {
+	By           User   `json:"by"`
+	When         string `json:"when"`
+	FriendlyWhen string `json:"friendlyWhen"`
+	Message      string `json:"message"`
+	Number       int    `json:"number"`
+	MinorEdit    bool   `json:"minorEdit"`
+	SyncRev      string `json:"syncRev"`
+	ConfRev      string `json:"confRev"`
+}
+
 // GetHistory returns history information
 func (a *API) GetHistory(id string) (*History, error) {
 	ep, err := a.getContentGenericEndpoint(id, "history")
@@ -130,6 +248,22 @@ func (a *API) GetHistory(id string) (*History, error) {
 		return nil, err
 	}
 	return a.SendHistoryRequest(ep, "GET")
+}
+
+// Labels is the label containter type
+type Labels struct {
+	Labels []Label `json:"results"`
+	Start  int     `json:"start,omitempty"`
+	Limit  int     `json:"limit,omitempty"`
+	Size   int     `json:"size,omitempty"`
+}
+
+// Label contains label information
+type Label struct {
+	Prefix string `json:"prefix"`
+	Name   string `json:"name"`
+	ID     string `json:"id,omitempty"`
+	Label  string `json:"label,omitempty"`
 }
 
 // GetLabels returns a list of labels attachted to a content object
@@ -157,6 +291,21 @@ func (a *API) DeleteLabel(id string, name string) (*Labels, error) {
 		return nil, err
 	}
 	return a.SendLabelRequest(ep, "DELETE", nil)
+}
+
+// Watchers is a list of Watcher
+type Watchers struct {
+	Watchers []Watcher `json:"results"`
+	Start    int       `json:"start,omitempty"`
+	Limit    int       `json:"limit,omitempty"`
+	Size     int       `json:"size,omitempty"`
+}
+
+// Watcher contains information about watching users of a page
+type Watcher struct {
+	Type      string `json:"type"`
+	Watcher   User   `json:"watcher"`
+	ContentID int    `json:"contentId"`
 }
 
 // GetWatchers returns a list of watchers
@@ -213,6 +362,11 @@ func (a *API) DelContent(id string) (*Content, error) {
 		return nil, err
 	}
 	return a.SendContentRequest(ep, "DELETE", nil)
+}
+
+// ContentVersionResult contains the version results
+type ContentVersionResult struct {
+	Result []Version `json:"results"`
 }
 
 // GetContentVersion gets all versions of this content

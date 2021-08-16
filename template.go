@@ -8,6 +8,32 @@ import (
 	"strings"
 )
 
+// Template contains blueprint data
+type Template struct {
+	ID          string `json:"templateId,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Type        string `json:"templateType,omitempty"`
+	Description string `json:"description"`
+	Body        Body   `json:"body"`
+	Space       Space  `json:"space"`
+}
+
+// TemplateQuery defines the query parameters
+type TemplateQuery struct {
+	SpaceKey string
+	Start    int // page start
+	Limit    int // page limit
+	Expand   []string
+}
+
+// TemplateSearch contains blueprint search results
+type TemplateSearch struct {
+	Results []Template `json:"results"`
+	Start   int        `json:"start,omitempty"`
+	Limit   int        `json:"limit,omitempty"`
+	Size    int        `json:"size,omitempty"`
+}
+
 func (a *API) getBlueprintTemplatesEndpoint() (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/template/blueprint")
 }
