@@ -299,7 +299,12 @@ func confluenceRestAPIStub() *httptest.Server {
 		case "/wiki/rest/api/content/":
 			resp = Content{}
 		case "/wiki/rest/api/content/42":
-			resp = Content{}
+			if r.Method == "DELETE" {
+				resp = ""
+				w.WriteHeader(http.StatusNoContent)
+			} else {
+				resp = Content{}
+			}
 		case "/wiki/rest/api/user?username=42":
 			resp = User{}
 		case "/wiki/rest/api/user?accountId=42":
