@@ -97,12 +97,12 @@ func (a *API) SendContentRequest(ep *url.URL, method string, c *Content) (*Conte
 	}
 
 	var content Content
-
-	err = json.Unmarshal(res, &content)
-	if err != nil {
-		return nil, err
+	if len(res) != 0 {
+		err = json.Unmarshal(res, &content)
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	return &content, nil
 }
 
