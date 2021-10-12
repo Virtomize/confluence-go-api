@@ -10,7 +10,7 @@
 
 is a [Confluence](https://www.atlassian.com/software/confluence) REST API client implementation written in [GOLANG](https://golang.org).
 
-## Supportet Features
+## Supported Features
 
 - get, update, delete content
 - get, update, delete content templates and blueprints
