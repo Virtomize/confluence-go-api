@@ -21,15 +21,15 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	}
 
 	a := new(API)
-	a.endPoint = u
-	a.token = token
-	a.username = username
+	a.EndPoint = u
+	a.Token = token
+	a.Username = username
 
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
 	}
 
-	a.client = &http.Client{Transport: tr}
+	a.Client = &http.Client{Transport: tr}
 
 	return a, nil
 }
@@ -44,8 +44,8 @@ func NewAPIWithClient(location string, client *http.Client) (*API, error) {
 	}
 
 	a := new(API)
-	a.endPoint = u
-	a.client = client
+	a.EndPoint = u
+	a.Client = client
 
 	return a, nil
 }
@@ -55,7 +55,7 @@ func (a *API) VerifyTLS(set bool) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: !set},
 	}
-	a.client = &http.Client{Transport: tr}
+	a.Client = &http.Client{Transport: tr}
 }
 
 // DebugFlag is the global debugging variable
