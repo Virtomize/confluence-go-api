@@ -35,7 +35,7 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	Debug("====== /Request Body ======")
 	Debug("====== /Request ======")
 
-	resp, err := a.client.Do(req)
+	resp, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
