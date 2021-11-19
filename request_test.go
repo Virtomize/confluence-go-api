@@ -83,6 +83,32 @@ func TestSendContentRequest(t *testing.T) {
 	}
 }
 
+func TestSendContentRequestToken(t *testing.T) {
+	server := confluenceRestAPIStub()
+	defer server.Close()
+
+	api, err := NewAPI(server.URL+"/wiki/rest/api", "", "token")
+	assert.Nil(t, err)
+
+	ep, err := api.getContentEndpoint()
+	assert.Nil(t, err)
+
+	testValues := []testValuesContentRequest{
+		{nil, "GET", &Content{}, nil},
+		{&Content{}, "GET", &Content{}, nil},
+	}
+
+	for _, test := range testValues {
+		b, err := api.SendContentRequest(ep, test.Method, test.Content)
+		if test.Error == nil {
+			assert.Nil(t, err)
+		} else {
+			assert.Equal(t, test.Error.Error(), err.Error)
+		}
+		assert.Equal(t, test.Body, b)
+	}
+}
+
 type testValuesAttachmentRequest struct {
 	AttachmentName string
 	Attachment     io.Reader

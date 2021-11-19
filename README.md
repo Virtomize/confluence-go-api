@@ -67,6 +67,15 @@ func main() {
 }
 ```
 
+
+### Using a Personal Access Token
+
+To generate a confluence personal access token (PAT) see this article: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html. Only set the token in the NewAPI function
+
+```
+  api, err := goconfluence.NewAPI("https://<your-domain>.atlassian.net/wiki/rest/api", "", "<personal-access-token>")
+```
+
 ### Advanced examples
 
 see [examples](https://github.com/virtomize/confluence-go-api/tree/master/examples) for some more usage examples
