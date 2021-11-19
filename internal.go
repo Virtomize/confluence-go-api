@@ -8,6 +8,10 @@ import (
 	"net/url"
 )
 
+var (
+	errEmptyHTTPClient = errors.New("empty http client")
+)
+
 // NewAPI implements API constructor
 func NewAPI(location string, username string, token string) (*API, error) {
 	if len(location) == 0 {
@@ -41,6 +45,10 @@ func NewAPIWithClient(location string, client *http.Client) (*API, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	if client == nil {
+		return nil, errEmptyHTTPClient
 	}
 
 	a := new(API)

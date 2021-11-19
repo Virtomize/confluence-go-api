@@ -11,39 +11,52 @@ import (
 
 func TestAuth(t *testing.T) {
 
-	req := httptest.NewRequest("POST", "https://test.test", nil)
+	t.Run("basic-auth", func(t *testing.T) {
+		req := httptest.NewRequest("POST", "https://test.test", nil)
+		api, err := NewAPI("https://test.test", "username", "token")
 
-	api, err := NewAPI("https://test.test", "username", "token")
+		assert.Nil(t, err)
+		assert.Empty(t, req.Header)
 
-	assert.Nil(t, err)
-	assert.Empty(t, req.Header)
+		api.Auth(req)
+		h := req.Header.Get("Authorization")
+		assert.NotEmpty(t, h)
 
-	api.Auth(req)
-	h := req.Header.Get("Authorization")
-	assert.NotEmpty(t, h)
+		split := strings.Split(h, " ")
+		assert.Len(t, split, 2)
 
-	split := strings.Split(h, " ")
-	assert.Len(t, split, 2)
+		b, err := base64.StdEncoding.DecodeString(split[1])
+		assert.Nil(t, err)
 
-	b, err := base64.StdEncoding.DecodeString(split[1])
-	assert.Nil(t, err)
+		auth := strings.Split(string(b), ":")
+		assert.Len(t, auth, 2)
+		assert.Equal(t, "username", auth[0])
+		assert.Equal(t, "token", auth[1])
+	})
 
-	auth := strings.Split(string(b), ":")
-	assert.Len(t, auth, 2)
-	assert.Equal(t, "username", auth[0])
-	assert.Equal(t, "token", auth[1])
-}
+	t.Run("empty-auth", func(t *testing.T) {
+		req := httptest.NewRequest("POST", "https://test.test", nil)
 
-func TestEmptyAuth(t *testing.T) {
+		api, err := NewAPI("https://test.test", "", "")
 
-	req := httptest.NewRequest("POST", "https://test.test", nil)
+		assert.Nil(t, err)
+		assert.Empty(t, req.Header)
 
-	api, err := NewAPI("https://test.test", "", "")
+		api.Auth(req)
+		h := req.Header.Get("Authorization")
+		assert.Empty(t, h)
+	})
 
-	assert.Nil(t, err)
-	assert.Empty(t, req.Header)
+	t.Run("token-auth", func(t *testing.T) {
+		req := httptest.NewRequest("POST", "https://test.test", nil)
 
-	api.Auth(req)
-	h := req.Header.Get("Authorization")
-	assert.Empty(t, h)
+		api, err := NewAPI("https://test.test", "", "token")
+
+		assert.Nil(t, err)
+		assert.Empty(t, req.Header)
+
+		api.Auth(req)
+		h := req.Header.Get("Authorization")
+		assert.Equal(t, "Bearer token", h)
+	})
 }
