@@ -32,6 +32,20 @@ type Content struct {
 	Space     Space      `json:"space"`
 	History   *History   `json:"history,omitempty"`
 	Links     *Links     `json:"_links,omitempty"`
+	Metadata  *Metadata  `json:"metadata"`
+}
+
+type Metadata struct {
+	Properties *Properties
+}
+
+type Properties struct {
+	Editor *Editor
+}
+
+type Editor struct {
+	Key   string
+	Value string
 }
 
 // Links contains link information
