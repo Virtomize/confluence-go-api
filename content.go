@@ -36,16 +36,16 @@ type Content struct {
 }
 
 type Metadata struct {
-	Properties *Properties
+	Properties *Properties `json:"properties"`
 }
 
 type Properties struct {
-	Editor *Editor
+	Editor *Editor `json:"editor"`
 }
 
 type Editor struct {
-	Key   string
-	Value string
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // Links contains link information
