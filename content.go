@@ -40,12 +40,22 @@ type Metadata struct {
 }
 
 type Properties struct {
-	Editor *Editor `json:"editor"`
+	Editor                     *Editor                     `json:"editor"`
+	ContentAppearanceDraft     *ContentAppearanceDraft     `json:"content-appearance-draft"`
+	ContentAppearancePublished *ContentAppearancePublished `json:"content-appearance-published"`
 }
 
 type Editor struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
+}
+
+type ContentAppearanceDraft struct {
+	Value string `json:"content-appearance-draft"`
+}
+
+type ContentAppearancePublished struct {
+	Value string `json:"content-appearance-published"`
 }
 
 // Links contains link information
