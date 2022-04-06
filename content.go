@@ -51,11 +51,11 @@ type Editor struct {
 }
 
 type ContentAppearanceDraft struct {
-	Value string `json:"content-appearance-draft"`
+	Value string `json:"value"`
 }
 
 type ContentAppearancePublished struct {
-	Value string `json:"content-appearance-published"`
+	Value string `json:"value"`
 }
 
 // Links contains link information
