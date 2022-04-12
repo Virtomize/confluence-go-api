@@ -35,25 +35,30 @@ type Content struct {
 	Metadata  *Metadata  `json:"metadata"`
 }
 
+// Metadata specifies metadata properties
 type Metadata struct {
 	Properties *Properties `json:"properties"`
 }
 
+// Properties defines properties of the editor
 type Properties struct {
 	Editor                     *Editor                     `json:"editor"`
 	ContentAppearanceDraft     *ContentAppearanceDraft     `json:"content-appearance-draft"`
 	ContentAppearancePublished *ContentAppearancePublished `json:"content-appearance-published"`
 }
 
+// Editor contains editor information
 type Editor struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }
 
+// ContentAppearanceDraft sets the appearance of the content in draft form
 type ContentAppearanceDraft struct {
 	Value string `json:"value"`
 }
 
+// ContentAppearancePublished sets the appearance of the content in published form
 type ContentAppearancePublished struct {
 	Value string `json:"value"`
 }
