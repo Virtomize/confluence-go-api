@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/virtomize/confluence-go-api"
+	"github.com/perolo/confluence-go-api"
 )
 
 func main() {
@@ -50,7 +50,7 @@ func main() {
 				Representation: "storage",
 			},
 		},
-		Version: goconfluence.Version{
+		Version: &goconfluence.Version{
 			Number: 1,
 		},
 		Space: goconfluence.Space{
@@ -81,7 +81,7 @@ func main() {
 				Representation: "storage",
 			},
 		},
-		Version: goconfluence.Version{
+		Version: &goconfluence.Version{
 			Number: 2,
 		},
 		Space: goconfluence.Space{

@@ -25,6 +25,7 @@ type AllSpacesQuery struct {
 	Start            int    // page start
 	Status           string // current, archived
 	Type             string // global, personal
+	Label            string
 }
 
 // getSpaceEndpoint creates the correct api endpoint

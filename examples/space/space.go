@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/virtomize/confluence-go-api"
+	"github.com/perolo/confluence-go-api"
 )
 
 func main() {
