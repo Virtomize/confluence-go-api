@@ -45,7 +45,10 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp.Body.Close()
+	err = resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
 	Debug("====== Response Body ======")
 	Debug(string(res))
@@ -111,16 +114,19 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 	// setup body for mulitpart file, adding minorEdit option
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	writer.WriteField("minorEdit", "true")
-	part, err := writer.CreateFormFile("file", attachmentName)
+	err := writer.WriteField("minorEdit", "true")
 	if err != nil {
 		return nil, err
 	}
+	part, err2 := writer.CreateFormFile("file", attachmentName)
+	if err2 != nil {
+		return nil, err2
+	}
 
 	// add attachment to body
-	_, err = io.Copy(part, attachment)
-	if err != nil {
-		return nil, err
+	_, err2 = io.Copy(part, attachment)
+	if err2 != nil {
+		return nil, err2
 	}
 
 	// add any other params
@@ -129,30 +135,30 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 	}
 
 	//clean up multipart form writer
-	err = writer.Close()
-	if err != nil {
-		return nil, err
+	err2 = writer.Close()
+	if err2 != nil {
+		return nil, err2
 	}
 
-	req, err := http.NewRequest("POST", ep.String(), body) // will always be put
-	if err != nil {
-		return nil, err
+	req, err2 := http.NewRequest("POST", ep.String(), body) // will always be put
+	if err2 != nil {
+		return nil, err2
 	}
 
 	req.Header.Set("X-Atlassian-Token", "nocheck") // required by api
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	// https://developer.atlassian.com/cloud/confluence/rest/#api-api-content-id-child-attachment-put
 
-	res, err := a.Request(req)
-	if err != nil {
-		return nil, err
+	res, err2 := a.Request(req)
+	if err2 != nil {
+		return nil, err2
 	}
 
 	var search Search
 
-	err = json.Unmarshal(res, &search)
-	if err != nil {
-		return nil, err
+	err2 = json.Unmarshal(res, &search)
+	if err2 != nil {
+		return nil, err2
 	}
 
 	return &search, nil
@@ -292,6 +298,9 @@ func (a *API) SendWatcherRequest(ep *url.URL, method string) (*Watchers, error) 
 // SendAllSpacesRequest sends a request for all spaces
 func (a *API) SendAllSpacesRequest(ep *url.URL, method string) (*AllSpaces, error) {
 
+	if a.Debug {
+		fmt.Printf("Send: %s, Method: %s \n", ep.String(), method)
+	}
 	req, err := http.NewRequest(method, ep.String(), nil)
 	if err != nil {
 		return nil, err
@@ -307,6 +316,9 @@ func (a *API) SendAllSpacesRequest(ep *url.URL, method string) (*AllSpaces, erro
 	err = json.Unmarshal(res, &allSpaces)
 	if err != nil {
 		return nil, err
+	}
+	if a.Debug {
+		fmt.Printf("Reply: %s \n", res)
 	}
 
 	return &allSpaces, nil
@@ -333,4 +345,31 @@ func (a *API) SendContentVersionRequest(ep *url.URL, method string) (*ContentVer
 	}
 
 	return &versionResult, nil
+}
+
+func (a *API) getSendGenericRequest(ep string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + ep)
+}
+
+// SendGenericRequest sends a greneric request
+func (a *API) SendGenericRequest(ep, method string) ([]byte, error) {
+	endp, err := a.getSendGenericRequest(ep)
+	if err != nil {
+		return nil, err
+	}
+
+	if a.Debug {
+		fmt.Printf("Send: %s, Method: %s \n", endp, method)
+	}
+	req, err := http.NewRequest(method, endp.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

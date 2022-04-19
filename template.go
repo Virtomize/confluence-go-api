@@ -35,11 +35,11 @@ type TemplateSearch struct {
 }
 
 func (a *API) getBlueprintTemplatesEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/template/blueprint")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/template/blueprint")
 }
 
 func (a *API) getContentTemplatesEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/template/page")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/template/page")
 }
 
 // GetBlueprintTemplates querys for content blueprints defined by TemplateQuery parameters

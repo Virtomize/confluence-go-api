@@ -7,12 +7,14 @@ import (
 )
 
 // AllSpaces results
+/*
 type AllSpaces struct {
 	Results []Space `json:"results"`
 	Start   int     `json:"start,omitempty"`
 	Limit   int     `json:"limit,omitempty"`
 	Size    int     `json:"size,omitempty"`
 }
+*/
 
 // AllSpacesQuery defines the query parameters
 // Query parameter values https://developer.atlassian.com/cloud/confluence/rest/#api-space-get
@@ -30,7 +32,7 @@ type AllSpacesQuery struct {
 
 // getSpaceEndpoint creates the correct api endpoint
 func (a *API) getSpaceEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/space")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/space")
 }
 
 // GetAllSpaces queries content using a query parameters

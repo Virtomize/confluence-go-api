@@ -10,7 +10,7 @@ func TestUser(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.NoError(t, err)
 
 	u, err := api.CurrentUser()

@@ -22,16 +22,16 @@ func TestRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	testValues := []testValuesRequest{
-		{"/test", "\"test\"", nil},
-		{"/nocontent", "", nil},
-		{"/noauth", "", fmt.Errorf("authentication failed")},
-		{"/noservice", "", fmt.Errorf("service is not available: 503 Service Unavailable")},
-		{"/internalerror", "", fmt.Errorf("internal server error: 500 Internal Server Error")},
-		{"/unknown", "", fmt.Errorf("unknown response status: 408 Request Timeout")},
+		{"/rest/api/test", "\"test\"", nil},
+		{"/rest/api/nocontent", "", nil},
+		{"/rest/api/noauth", "", fmt.Errorf("authentication failed")},
+		{"/rest/api/noservice", "", fmt.Errorf("service is not available: 503 Service Unavailable")},
+		{"/rest/api/internalerror", "", fmt.Errorf("internal server error: 500 Internal Server Error")},
+		{"/rest/api/unknown", "", fmt.Errorf("unknown response status: 408 Request Timeout")},
 	}
 
 	for _, test := range testValues {
@@ -61,7 +61,7 @@ func TestSendContentRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentEndpoint()
@@ -87,7 +87,7 @@ func TestSendContentRequestToken(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "", "token")
+	api, err := NewAPI(server.URL+"/wiki", "", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentEndpoint()
@@ -120,7 +120,7 @@ func TestSendContentAttachmentRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentChildEndpoint("43", "attachment")
@@ -155,7 +155,7 @@ func TestSendUserRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getUserEndpoint("42")
@@ -186,7 +186,7 @@ func TestSendSearchRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getSearchEndpoint()
@@ -217,7 +217,7 @@ func TestSendHistoryRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "history")
@@ -249,7 +249,7 @@ func TestSendLabelRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "label")
@@ -280,7 +280,7 @@ func TestSendWatcherRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "notification/child-created")
@@ -301,7 +301,7 @@ func TestSendWatcherRequest(t *testing.T) {
 	}
 }
 
-func confluenceRestAPIStub() *httptest.Server {
+func confluenceRestAPIStub() *httptest.Server { //nolint:gocyclo
 	var resp interface{}
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.RequestURI {
@@ -380,6 +380,9 @@ func confluenceRestAPIStub() *httptest.Server {
 			http.Error(w, string(b), http.StatusInternalServerError)
 			return
 		}
-		w.Write(b)
+		_, err = w.Write(b)
+		if err != nil {
+			return
+		}
 	}))
 }

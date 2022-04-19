@@ -13,26 +13,26 @@ func TestGetContentEndpoints(t *testing.T) {
 
 	url, err := a.getContentIDEndpoint("test")
 	assert.Nil(t, err)
-	assert.Equal(t, "/content/test", url.Path)
+	assert.Equal(t, "/rest/api/content/test", url.Path)
 
 	url, err = a.getContentEndpoint()
 	assert.Nil(t, err)
-	assert.Equal(t, "/content/", url.Path)
+	assert.Equal(t, "/rest/api/content/", url.Path)
 
 	url, err = a.getContentChildEndpoint("test", "child")
 	assert.Nil(t, err)
-	assert.Equal(t, "/content/test/child/child", url.Path)
+	assert.Equal(t, "/rest/api/content/test/child/child", url.Path)
 
 	url, err = a.getContentGenericEndpoint("test", "child")
 	assert.Nil(t, err)
-	assert.Equal(t, "/content/test/child", url.Path)
+	assert.Equal(t, "/rest/api/content/test/child", url.Path)
 }
 
 func TestContentGetter(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	c, err := api.GetContentByID("42", ContentQuery{})
@@ -72,7 +72,7 @@ func TestAddLabels(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	l, err := api.AddLabels("42", &[]Label{})
@@ -84,7 +84,7 @@ func TestDeleteLabels(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	l, err := api.DeleteLabel("42", "test")
@@ -96,7 +96,7 @@ func TestContent(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	c, err := api.CreateContent(&Content{})

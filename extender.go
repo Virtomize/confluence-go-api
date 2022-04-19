@@ -1,6 +1,8 @@
 package goconfluence
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -10,30 +12,43 @@ func (a *API) getAddCategoryEndpoint(spaceKey string, category string) (*url.URL
 }
 
 // AddSpaceCategory /rest/extender/1.0/category/addSpaceCategory/space/{SPACE_KEY}/category/{CATEGORY_NAME}
-func (a *API) AddSpaceCategory(spaceKey string, category string) (*http.Response, error) {
+func (a *API) AddSpaceCategory(spaceKey string, category string) (*AddCategoryResponseType, error) {
 
 	ep, err := a.getAddCategoryEndpoint(spaceKey, category)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, a.SendAddCategoryRequest(ep, "PUT")
+	return a.SendAddCategoryRequest(ep, "PUT")
 
 }
 
-func (a *API) SendAddCategoryRequest(ep *url.URL, method string) error {
-
+func (a *API) SendAddCategoryRequest(ep *url.URL, method string) (*AddCategoryResponseType, error) {
+	if a.Debug {
+		fmt.Printf("Send: %s, Method: %s \n", ep.String(), method)
+	}
 	req, err := http.NewRequest(method, ep.String(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	_, err2 := a.Request(req)
+	resp, err2 := a.Request(req)
 	if err2 != nil {
-		return err2
+		return nil, err2
 	}
 
-	return nil
+	var addresp AddCategoryResponseType
+
+	err = json.Unmarshal(resp, &addresp)
+	if err != nil {
+		return nil, err
+	}
+	if a.Debug {
+		fmt.Printf("Reply: %s \n", resp)
+	}
+
+	return &addresp, nil
+
 }
 
 /*

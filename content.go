@@ -83,22 +83,22 @@ type Space struct {
 
 // getContentIDEndpoint creates the correct api endpoint by given id
 func (a *API) getContentIDEndpoint(id string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id)
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/content/" + id)
 }
 
 // getContentEndpoint creates the correct api endpoint
 func (a *API) getContentEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/content/")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/content/")
 }
 
 // getContentChildEndpoint creates the correct api endpoint by given id and type
 func (a *API) getContentChildEndpoint(id string, t string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/child/" + t)
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/content/" + id + "/child/" + t)
 }
 
 // getContentGenericEndpoint creates the correct api endpoint by given id and type
 func (a *API) getContentGenericEndpoint(id string, t string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/content/" + id + "/" + t)
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/content/" + id + "/" + t)
 }
 
 // ContentQuery defines the query parameters

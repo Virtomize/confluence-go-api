@@ -13,7 +13,7 @@ type Search struct {
 	Limit     int       `json:"limit,omitempty"`
 	Size      int       `json:"size,omitempty"`
 	ID        string    `json:"id,omitempty"`
-	TotalSize int       `json:"totalSize, omitempty"`
+	TotalSize int       `json:"totalSize,omitempty"`
 }
 
 // SearchQuery defines query parameters used for searchng
@@ -29,7 +29,7 @@ type SearchQuery struct {
 
 // getContentEndpoint creates the correct api endpoint by given id
 func (a *API) getSearchEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/search")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/search")
 }
 
 // Search querys confluence using CQL
@@ -52,7 +52,7 @@ func addSearchQueryParams(query SearchQuery) *url.Values {
 	if query.CQLContext != "" {
 		data.Set("cqlcontext", query.CQLContext)
 	}
-	if query.IncludeArchivedSpaces == true {
+	if query.IncludeArchivedSpaces {
 		data.Set("includeArchivedSpaces", "true")
 	}
 	if query.Limit != 0 {

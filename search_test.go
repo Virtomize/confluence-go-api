@@ -11,8 +11,8 @@ func TestSearchQueryParams(t *testing.T) {
 		CQL:                   "test",
 		CQLContext:            "test",
 		IncludeArchivedSpaces: true,
-		Limit: 1,
-		Start: 1,
+		Limit:                 1,
+		Start:                 1,
 	}
 	p := addSearchQueryParams(query)
 	assert.Equal(t, p.Get("cql"), "test")
@@ -26,7 +26,7 @@ func TestSearch(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki", "userame", "token")
 	assert.Nil(t, err)
 
 	s, err := api.Search(SearchQuery{})

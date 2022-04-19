@@ -10,4 +10,5 @@ type API struct {
 	endPoint        *url.URL
 	Client          *http.Client
 	username, token string
+	Debug           bool
 }

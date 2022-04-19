@@ -16,17 +16,17 @@ type User struct {
 
 // getUserEndpoint creates the correct api endpoint by given id
 func (a *API) getUserEndpoint(id string) (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/user?accountId=" + id)
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/user?accountId=" + id)
 }
 
 // getCurrentUserEndpoint creates the correct api endpoint by given id
 func (a *API) getCurrentUserEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/user/current")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/user/current")
 }
 
 // getAnonymousUserEndpoint creates the correct api endpoint by given id
 func (a *API) getAnonymousUserEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/user/anonymous")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/user/anonymous")
 }
 
 // CurrentUser return current user information
