@@ -365,13 +365,21 @@ func (a *API) DelContent(id string) (*Content, error) {
 }
 
 // ContentVersionResult contains the version results
+
+/*
 type ContentVersionResult struct {
 	Result []Version `json:"results"`
+}
+*/
+
+// getContentGenericEndpoint creates the correct api endpoint by given id and type
+func (a *API) getContentVersionEndpoint(id string, t string) (*url.URL, error) {
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/experimental/content/" + id + "/" + t)
 }
 
 // GetContentVersion gets all versions of this content
 func (a *API) GetContentVersion(id string) (*ContentVersionResult, error) {
-	ep, err := a.getContentGenericEndpoint(id, "version")
+	ep, err := a.getContentVersionEndpoint(id, "version")
 	if err != nil {
 		return nil, err
 	}

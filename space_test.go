@@ -58,28 +58,29 @@ func TestGetAllSpacesQuery(t *testing.T) {
 
 }
 
-func Test_SpaceGetSpacesMocFileSuccess(t *testing.T) {
-	index := TestSpaceGetSpacesMocFileS
+func Test_TestSpaceGetPersonalSpacesSuccess(t *testing.T) {
+	prepareTest(t, TestSpaceGetPersonalSpaces)
 
-	testAPIEndpoint := ConfluenceTest[index].APIEndpoint
+	spaces, err2 := testClient.GetAllSpaces(AllSpacesQuery{Type: "personal"}) //Type: "personal"
+	//	defer CleanupH(resp)
 
-	raw, err := ioutil.ReadFile(ConfluenceTest[index].File)
-	if err != nil {
-		t.Error(err.Error())
+	if err2 == nil {
+
+		if spaces == nil {
+			t.Error("Expected Spaces. Spaces is nil")
+		} else {
+			if spaces.Size == 0 {
+				t.Errorf("Expected 1 Space, received: %v Spaces \n", spaces.Size)
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
 	}
 
-	setup()
-	defer teardown()
-	testMux.HandleFunc(testAPIEndpoint, func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, ConfluenceTest[index].Method)
-		testRequestURL(t, r, testAPIEndpoint)
+}
 
-		_, err = fmt.Fprint(w, string(raw))
-		if err != nil {
-			t.Errorf("Error given: %s", err)
-		}
-
-	})
+func Test_SpaceGetSpacesMocFileSuccess(t *testing.T) {
+	prepareTest(t, TestSpaceGetSpacesMocFileS)
 
 	spaces, err2 := testClient.GetAllSpaces(AllSpacesQuery{})
 	//	defer CleanupH(resp)
@@ -89,14 +90,13 @@ func Test_SpaceGetSpacesMocFileSuccess(t *testing.T) {
 		if spaces == nil {
 			t.Error("Expected Spaces. Spaces is nil")
 		} else {
-			if spaces.Size != 1 {
+			if spaces.Size == 0 {
 				t.Errorf("Expected 1 Space, received: %v Spaces \n", spaces.Size)
 			}
 		}
 	} else {
 		t.Error("Received nil response.")
 	}
-
 }
 
 // setup sets up a test HTTP server along with a jira.Client that is configured to talk to that test server.
@@ -118,6 +118,28 @@ func setup() {
 // teardown closes the test HTTP server.
 func teardown() {
 	//	testServer.Close()
+}
+
+func prepareTest(t *testing.T, index int) {
+
+	testAPIEndpoint := ConfluenceTest[index].MockEndpoint
+
+	raw, err := ioutil.ReadFile(ConfluenceTest[index].File)
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	setup()
+	defer teardown()
+	testMux.HandleFunc(testAPIEndpoint, func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, ConfluenceTest[index].Method)
+		testRequestURL(t, r, testAPIEndpoint)
+
+		_, err = fmt.Fprint(w, string(raw))
+		if err != nil {
+			t.Errorf("Error given: %s", err)
+		}
+	})
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {

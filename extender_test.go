@@ -1,40 +1,15 @@
 package goconfluence
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
 	"testing"
 )
 
-func Test_TestAddCategoryResponse(t *testing.T) {
-	index := TestAddCategoryResponseType
-
-	testAPIEndpoint := ConfluenceTest[index].APIEndpoint
-
-	raw, err := ioutil.ReadFile(ConfluenceTest[index].File)
-	if err != nil {
-		t.Error(err.Error())
-	}
-
-	setup()
-	defer teardown()
-	testMux.HandleFunc(testAPIEndpoint, func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, ConfluenceTest[index].Method)
-		testRequestURL(t, r, testAPIEndpoint)
-
-		_, err = fmt.Fprint(w, string(raw))
-		if err != nil {
-			t.Errorf("Error given: %s", err)
-		}
-
-	})
+func Test_TestExtenderAddCategoryResponseType(t *testing.T) {
+	prepareTest(t, TestExtenderAddCategoryResponseType)
 
 	ok, err2 := testClient.AddSpaceCategory("ds", "test")
 	//	defer CleanupH(resp)
-
 	if err2 == nil {
-
 		if ok == nil {
 			t.Error("Expected Spaces. Spaces is nil")
 		} else {
@@ -45,5 +20,58 @@ func Test_TestAddCategoryResponse(t *testing.T) {
 	} else {
 		t.Error("Received nil response.")
 	}
+}
 
+func Test_ExtenderSpacePermissionTypes(t *testing.T) {
+	prepareTest(t, TestExtenderSpacePermissionTypes)
+
+	permissionTypes, err2 := testClient.GetPermissionTypes()
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if permissionTypes == nil {
+			t.Error("Expected Spaces. Spaces is nil")
+		} else {
+			if len(*permissionTypes) == 0 {
+				t.Errorf("Expected Success, received: %v Spaces \n", len(*permissionTypes))
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
+}
+
+func Test_TestExtenderSpacePermissionTypes(t *testing.T) {
+	prepareTest(t, TestExtenderSpaceUserPermission)
+
+	usersWithAnyPermission, err2 := testClient.GetAllUsersWithAnyPermission("~admin", &PaginationOptions{}) // StartAt: 0, MaxResults: 50
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if usersWithAnyPermission == nil {
+			t.Error("Expected Spaces. Spaces is nil")
+		} else {
+			if len(usersWithAnyPermission.Users) == 0 {
+				t.Errorf("Expected Success, received: %v Spaces \n", len(usersWithAnyPermission.Users))
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
+}
+
+func Test_TestExtenderSpaceAnyUserPermission(t *testing.T) {
+	prepareTest(t, TestExtenderSpaceAnyUserPermission)
+
+	userPermissionsForSpace, err2 := testClient.GetUserPermissionsForSpace("~admin", "admin")
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if userPermissionsForSpace == nil {
+			t.Error("Expected Spaces. Spaces is nil")
+		} else {
+			if len(userPermissionsForSpace.Permissions) == 0 {
+				t.Errorf("Expected Success, received: %v Spaces \n", len(userPermissionsForSpace.Permissions))
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
 }

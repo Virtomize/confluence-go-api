@@ -147,3 +147,21 @@ func TestAddContentQueryParams(t *testing.T) {
 	assert.Equal(t, p.Get("trigger"), "test")
 	assert.Equal(t, p.Get("type"), "test")
 }
+
+func Test_TestGetVersion(t *testing.T) {
+	prepareTest(t, TestGetVersion)
+
+	res, err2 := testClient.GetContentVersion("65551")
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if res == nil {
+			t.Error("Expected version - is nil")
+		} else {
+			if res.Results[0].Number != 1 {
+				t.Errorf("Expected Version 1, received: %v \n", res.Results[0].Number)
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
+}

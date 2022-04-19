@@ -3,10 +3,33 @@ package goconfluence
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/google/go-querystring/query"
 	"net/http"
 	"net/url"
+	"reflect"
 )
 
+// addOptions adds the parameters in opt as URL query parameters to s.  opt
+// must be a struct whose fields may contain "url" tags.
+func addOptions(s string, opt interface{}) (string, error) {
+	v := reflect.ValueOf(opt)
+	if v.Kind() == reflect.Ptr && v.IsNil() {
+		return s, nil
+	}
+
+	u, err := url.Parse(s)
+	if err != nil {
+		return s, err
+	}
+
+	qs, err := query.Values(opt)
+	if err != nil {
+		return s, err
+	}
+
+	u.RawQuery = qs.Encode()
+	return u.String(), nil
+}
 func (a *API) getAddCategoryEndpoint(spaceKey string, category string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/rest/extender/1.0/category/addSpaceCategory/space/" + spaceKey + "/category/" + category)
 }
@@ -24,62 +47,105 @@ func (a *API) AddSpaceCategory(spaceKey string, category string) (*AddCategoryRe
 }
 
 func (a *API) SendAddCategoryRequest(ep *url.URL, method string) (*AddCategoryResponseType, error) {
-	if a.Debug {
-		fmt.Printf("Send: %s, Method: %s \n", ep.String(), method)
-	}
-	req, err := http.NewRequest(method, ep.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err2 := a.Request(req)
-	if err2 != nil {
-		return nil, err2
-	}
 
 	var addresp AddCategoryResponseType
 
-	err = json.Unmarshal(resp, &addresp)
+	err3 := a.DoRequest(ep.String(), method, &addresp)
+	if err3 != nil {
+		return nil, err3
+	}
+	return &addresp, nil
+}
+
+type PaginationOptions struct {
+	// StartAt: The starting index of the returned projects. Base index: 0.
+	StartAt int `url:"startAt,omitempty"`
+	// MaxResults: The maximum number of projects to return per page. Default: 50.
+	MaxResults int `url:"maxResults,omitempty"`
+	// Expand: Expand specific sections in the returned issues
+}
+
+//type PermissionsTypes []string
+
+func (a *API) GetPermissionTypes() (*PermissionsTypes, error) {
+	u := a.endPoint.String() + "/rest/extender/1.0/permission/space/permissionTypes"
+
+	var types PermissionsTypes
+	err3 := a.DoRequest(u, "GET", &types)
+	if err3 != nil {
+		return nil, err3
+	}
+	return &types, nil
+}
+
+/*
+type GetAllUsersWithAnyPermissionType struct {
+	Total      int      `json:"total"`
+	MaxResults int      `json:"maxResults"`
+	Users      []string `json:"users"`
+	StartAt    int      `json:"startAt"`
+}
+*/
+func (a *API) GetAllUsersWithAnyPermission(spacekey string, options *PaginationOptions) (*GetAllUsersWithAnyPermissionType, error) {
+	var u string = a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allUsersWithAnyPermission", spacekey)
+	/*
+		if options == nil {
+			u = a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allUsersWithAnyPermission", spacekey)
+		} else {
+			u = a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allUsersWithAnyPermission?startAt=%d&maxResults=%d", spacekey, options.StartAt, options.MaxResults)
+		}
+	*/
+	endpoint, err := addOptions(u, options)
 	if err != nil {
 		return nil, err
+	}
+	var types GetAllUsersWithAnyPermissionType
+
+	err = a.DoRequest(endpoint, "GET", &types)
+	if err != nil {
+		return nil, err
+	}
+	return &types, nil
+}
+
+func (a *API) GetUserPermissionsForSpace(spacekey, user string) (*GetPermissionsForSpaceType, error) {
+	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/user/%s/getPermissionsForSpace/space/%s", user, spacekey)
+	var permissions GetPermissionsForSpaceType
+
+	err3 := a.DoRequest(u, "GET", &permissions)
+	if err3 != nil {
+		return nil, err3
+	}
+	return &permissions, nil
+}
+
+func (a *API) DoRequest(endpoint string, method string, responseContainer interface{}) error {
+	if a.Debug {
+		fmt.Printf("Send: %s, Method: %s \n", endpoint, method)
+	}
+	req, err := http.NewRequest(method, endpoint, nil)
+	if err != nil {
+		return err
+	}
+	resp, err2 := a.Request(req)
+	if err2 != nil {
+		return err2
+	}
+
+	err = json.Unmarshal(resp, &responseContainer)
+	if err != nil {
+		return err
 	}
 	if a.Debug {
 		fmt.Printf("Reply: %s \n", resp)
 	}
-
-	return &addresp, nil
-
+	return nil
 }
 
 /*
-// addAllSpacesQueryParams adds the defined query parameters
-func addAllSpacesQueryParams(query AllSpacesQuery) *url.Values {
-
-	data := url.Values{}
-	if len(query.Expand) != 0 {
-		data.Set("expand", strings.Join(query.Expand, ","))
-	}
-	if query.Favourite {
-		data.Set("favourite", strconv.FormatBool(query.Favourite))
-	}
-	if query.FavouriteUserKey != "" {
-		data.Set("favouriteUserKey", query.FavouriteUserKey)
-	}
-	if query.Limit != 0 {
-		data.Set("limit", strconv.Itoa(query.Limit))
-	}
-	if query.SpaceKey != "" {
-		data.Set("spaceKey", query.SpaceKey)
-	}
-	if query.Start != 0 {
-		data.Set("start", strconv.Itoa(query.Start))
-	}
-	if query.Status != "" {
-		data.Set("status", query.Status)
-	}
-	if query.Type != "" {
-		data.Set("type", query.Type)
-	}
-	return &data
+type GetPermissionsForSpaceType struct {
+	Permissions []string `json:"permissions"`
+	Name        string   `json:"name"`
+	Key         string   `json:"key"`
 }
 */
