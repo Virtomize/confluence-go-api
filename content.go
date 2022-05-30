@@ -1,10 +1,15 @@
 package goconfluence
 
 import (
+	"bufio"
 	"encoding/json"
+	"errors"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -425,4 +430,60 @@ func addContentQueryParams(query ContentQuery) *url.Values {
 		data.Set("type", query.Type)
 	}
 	return &data
+}
+
+func (a *API) GetPageId(spacename string, pagename string) (*ContentSearch, error) {
+
+	var query ContentQuery
+
+	query.Start = 0
+	query.Limit = 10
+	query.SpaceKey = spacename
+	query.Title = pagename
+
+	return a.GetContent(query)
+}
+
+func (a *API) UppdateAttachment(spacename string, pagename string, filename string) error {
+
+	res, err := a.GetPageId(spacename, pagename)
+	if err != nil {
+		return err
+	}
+
+	if res.Size == 1 {
+		file, err3 := os.Open(filename)
+		if err3 != nil {
+			log.Fatal(err3)
+		}
+
+		reader := bufio.NewReader(file)
+
+		found := false
+		pageid := res.Results[0].ID
+		search, err2 := a.GetAttachments(pageid)
+		if err2 != nil {
+			log.Fatal(err2)
+		}
+		_, name := filepath.Split(filename)
+		for _, v := range search.Results {
+			if v.Title == name {
+				_, e := a.UpdateAttachment(pageid, name, v.ID, reader)
+				if e != nil {
+					log.Fatal(e)
+				}
+				found = true
+			}
+		}
+		if !found {
+			_, e := a.UploadAttachment(pageid, name, reader)
+			if e != nil {
+				log.Fatal(e)
+			}
+		}
+
+	} else {
+		return errors.New("page not found")
+	}
+	return nil
 }
