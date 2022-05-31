@@ -187,5 +187,7 @@ func Test_Localhost(t *testing.T) {
 	err3 := a.UppdateAttachment("ds", "Welcome to Confluence", "C:/Temp/Template.xlsx")
 	assert.Nil(t, err3)
 
+	a.AddPage("Test Added page 2", "ds", "./mocks/grouppage.html", true, true, res.Results[0].ID)
+
 }
 */

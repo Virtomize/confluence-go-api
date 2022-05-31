@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -486,4 +487,49 @@ func (a *API) UppdateAttachment(spacename string, pagename string, filename stri
 		return errors.New("page not found")
 	}
 	return nil
+}
+
+// AddPage adds a new page to the space with the given title, TODO what if page already exists?
+func (a *API) AddPage(title, spaceKey, filepath string, bodyOnly, stripImgs bool, ancestor string) {
+
+	// create content
+	data := &Content{
+		Type:  "page",
+		Title: title,
+		Ancestors: []Ancestor{
+			Ancestor{
+				ID: ancestor,
+			},
+		},
+		Body: Body{
+			Storage: Storage{
+				Value:          "",
+				Representation: "storage",
+			},
+		},
+		Version: &Version{
+			Number: 1,
+		},
+		Space: Space{
+			Key: spaceKey,
+		},
+	}
+	data.Body.Storage.Value = getBodyFromFile(filepath, bodyOnly, stripImgs)
+
+	_, err := a.CreateContent(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+func getBodyFromFile(filepath string, bodyOnly, stripImgs bool) string {
+	buf, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !bodyOnly {
+		return string(buf)
+	}
+	return StripHTML(buf, bodyOnly, stripImgs)
 }

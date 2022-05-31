@@ -2,9 +2,8 @@ module github.com/perolo/confluence-go-api/main
 
 go 1.18
 
-
 require (
-	github.com/perolo/confluence-go-api v1.3.1-0.20220531110134-af7150305c76
+	github.com/perolo/confluence-go-api v1.3.1-0.20220531115150-951c5c5d938d
 	gopkg.in/yaml.v3 v3.0.0 // indirect
 )
 
