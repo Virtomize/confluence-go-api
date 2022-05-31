@@ -3,10 +3,11 @@ package goconfluence
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/google/go-querystring/query"
 	"net/http"
 	"net/url"
 	"reflect"
+
+	"github.com/google/go-querystring/query"
 )
 
 // addOptions adds the parameters in opt as URL query parameters to s.  opt
@@ -149,3 +150,36 @@ type GetPermissionsForSpaceType struct {
 	Key         string   `json:"key"`
 }
 */
+
+type GetGroupMembersOptions struct {
+	MaxResults int `json:"maxResults"`
+	StartAt    int `json:"startAt"`
+}
+
+type GroupsType struct {
+	Total      int      `json:"total"`
+	MaxResults int      `json:"maxResults"`
+	Groups     []string `json:"groups"`
+	StartAt    int      `json:"startAt"`
+	Status     string   `json:"status"`
+}
+
+//groups, _ := confluence.GetGroups(&gropt)
+
+func (a *API) GetGroups(options *GetGroupMembersOptions) (*GroupsType, error) {
+
+	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/group/getGroups")
+
+	endpoint, err := addOptions(u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	var groups GroupsType
+
+	err3 := a.DoRequest(endpoint, "GET", &groups)
+	if err3 != nil {
+		return nil, err3
+	}
+	return &groups, nil
+}

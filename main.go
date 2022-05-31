@@ -2,11 +2,12 @@ package goconfluence
 
 import (
 	"fmt"
-	"github.com/perolo/gojson"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/perolo/gojson"
 )
 
 type ConfluenceTestType struct {
@@ -26,6 +27,7 @@ const (
 	TestExtenderSpacePermissionTypes
 	TestExtenderSpaceUserPermission
 	TestExtenderSpaceAnyUserPermission
+	TestExtenderGetGroups
 )
 
 var ConfluenceTest = []ConfluenceTestType{
@@ -36,10 +38,12 @@ var ConfluenceTest = []ConfluenceTestType{
 	{MockEndpoint: "/rest/extender/1.0/permission/space/permissionTypes", APIEndpoint: "/rest/extender/1.0/permission/space/permissionTypes", File: "mocks/permissions.json", Method: "GET", Type: "PermissionsTypes", TypeFile: "permissions-dtos.go"},
 	{MockEndpoint: "/rest/extender/1.0/permission/space/~admin/allUsersWithAnyPermission", APIEndpoint: "/rest/extender/1.0/permission/space/~admin/allUsersWithAnyPermission?maxResults=50", File: "mocks/get-users-permissions.json", Method: "GET", Type: "GetAllUsersWithAnyPermissionType", TypeFile: "get-users-permissions-dtos.go"},
 	{MockEndpoint: "/rest/extender/1.0/permission/user/admin/getPermissionsForSpace/space/~admin", APIEndpoint: "/rest/extender/1.0/permission/user/admin/getPermissionsForSpace/space/~admin", File: "mocks/get-admin-permissions.json", Method: "GET", Type: "GetPermissionsForSpaceType", TypeFile: "get-admin-permissions-dtos.go"},
+	{MockEndpoint: "/rest/extender/1.0/group/getGroups", APIEndpoint: "/rest/extender/1.0/group/getGroups", File: "mocks/get-groups.json", Method: "GET", Type: "GroupsType", TypeFile: "get-groups-dtos.go"},
 }
 
 func UpdateTests() {
-	confClient, err := NewAPI("http://localhost:1990/confluence", "admin", "admin")
+	//	confClient, err := NewAPI("http://localhost:1990/confluence", "admin", "admin")
+	confClient, err := NewAPI("http://192.168.50.40:8090", "admin", "admin")
 	confClient.Debug = true
 	if err != nil {
 		log.Fatal(err)

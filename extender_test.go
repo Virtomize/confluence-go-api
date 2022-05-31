@@ -75,3 +75,21 @@ func Test_TestExtenderSpaceAnyUserPermission(t *testing.T) {
 		t.Error("Received nil response.")
 	}
 }
+
+func Test_TestExtenderGetGroups(t *testing.T) {
+	prepareTest(t, TestExtenderGetGroups)
+
+	getGroups, err2 := testClient.GetGroups(nil)
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if getGroups == nil {
+			t.Error("Expected Groups. Groups is nil")
+		} else {
+			if len(getGroups.Groups) == 0 {
+				t.Errorf("Expected Success, received: %v Groups \n", len(getGroups.Groups))
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
+}
