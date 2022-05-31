@@ -177,7 +177,7 @@ type GetAllGroupsWithAnyPermissionType struct {
 
 func (a *API) GetAllGroupsWithAnyPermission(spacekey string, options *PaginationOptions) (*GetAllGroupsWithAnyPermissionType, error) {
 
-	u := fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allGroupsWithAnyPermission", spacekey)
+	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allGroupsWithAnyPermission", spacekey)
 	endpoint, err := addOptions(u, options)
 	if err != nil {
 		return nil, err
@@ -193,7 +193,7 @@ func (a *API) GetAllGroupsWithAnyPermission(spacekey string, options *Pagination
 }
 
 func (a *API) GetGroupPermissionsForSpace(spacekey, group string) (*GetPermissionsForSpaceType, error) {
-	u := fmt.Sprintf("/rest/extender/1.0/permission/group/%s/getPermissionsForSpace/space/%s", group, spacekey)
+	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/group/%s/getPermissionsForSpace/space/%s", group, spacekey)
 	permissions := new(GetPermissionsForSpaceType)
 	err3 := a.DoRequest(u, "GET", &permissions)
 	if err3 != nil {
