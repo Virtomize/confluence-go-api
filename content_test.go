@@ -165,3 +165,27 @@ func Test_TestGetVersion(t *testing.T) {
 		t.Error("Received nil response.")
 	}
 }
+
+/*
+Requires confluence server up and running...
+TODO - mock
+
+func Test_Localhost(t *testing.T) {
+	//a, err := NewAPI("http://localhost:1990/confluence", "admin", "admin")
+	//a, err := NewAPI("http://192.168.50.40:1990/confluence", "admin", "admin")
+	a, err := NewAPI("http://192.168.50.40:8090", "admin", "admin")
+	assert.Nil(t, err)
+
+	url, err := a.getContentIDEndpoint("test")
+	assert.Nil(t, err)
+	assert.Equal(t, "/rest/api/content/test", url.Path)
+
+	res, err2 := a.GetPageId("ds", "Welcome to Confluence")
+	assert.Nil(t, err2)
+	assert.Equal(t, "98319", res.Results[0].ID)
+
+	err3 := a.UppdateAttachment("ds", "Welcome to Confluence", "C:/Temp/Template.xlsx")
+	assert.Nil(t, err3)
+
+}
+*/

@@ -470,7 +470,7 @@ func (a *API) UppdateAttachment(spacename string, pagename string, filename stri
 			if v.Title == name {
 				_, e := a.UpdateAttachment(pageid, name, v.ID, reader)
 				if e != nil {
-					log.Fatal(e)
+					return e
 				}
 				found = true
 			}
@@ -478,7 +478,7 @@ func (a *API) UppdateAttachment(spacename string, pagename string, filename stri
 		if !found {
 			_, e := a.UploadAttachment(pageid, name, reader)
 			if e != nil {
-				log.Fatal(e)
+				return e
 			}
 		}
 
