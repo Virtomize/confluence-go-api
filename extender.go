@@ -79,14 +79,6 @@ func (a *API) GetPermissionTypes() (*PermissionsTypes, error) {
 	return &types, nil
 }
 
-/*
-type GetAllUsersWithAnyPermissionType struct {
-	Total      int      `json:"total"`
-	MaxResults int      `json:"maxResults"`
-	Users      []string `json:"users"`
-	StartAt    int      `json:"startAt"`
-}
-*/
 func (a *API) GetAllUsersWithAnyPermission(spacekey string, options *PaginationOptions) (*GetAllUsersWithAnyPermissionType, error) {
 	var u string = a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allUsersWithAnyPermission", spacekey)
 	/*
@@ -143,14 +135,6 @@ func (a *API) DoRequest(endpoint string, method string, responseContainer interf
 	return nil
 }
 
-/*
-type GetPermissionsForSpaceType struct {
-	Permissions []string `json:"permissions"`
-	Name        string   `json:"name"`
-	Key         string   `json:"key"`
-}
-*/
-
 type GetGroupMembersOptions struct {
 	MaxResults int `json:"maxResults"`
 	StartAt    int `json:"startAt"`
@@ -168,7 +152,7 @@ type GroupsType struct {
 
 func (a *API) GetGroups(options *GetGroupMembersOptions) (*GroupsType, error) {
 
-	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/group/getGroups")
+	u := a.endPoint.String() + "/rest/extender/1.0/group/getGroups"
 
 	endpoint, err := addOptions(u, options)
 	if err != nil {
@@ -182,4 +166,40 @@ func (a *API) GetGroups(options *GetGroupMembersOptions) (*GroupsType, error) {
 		return nil, err3
 	}
 	return &groups, nil
+}
+
+type GetAllGroupsWithAnyPermissionType struct {
+	Total      int      `json:"total"`
+	MaxResults int      `json:"maxResults"`
+	Groups     []string `json:"groups"`
+	StartAt    int      `json:"startAt"`
+}
+
+func (a *API) GetAllGroupsWithAnyPermission(spacekey string, options *PaginationOptions) (*GetAllGroupsWithAnyPermissionType, error) {
+
+	u := fmt.Sprintf("/rest/extender/1.0/permission/space/%s/allGroupsWithAnyPermission", spacekey)
+	endpoint, err := addOptions(u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	groups := new(GetAllGroupsWithAnyPermissionType)
+	err3 := a.DoRequest(endpoint, "GET", &groups)
+	if err3 != nil {
+		return nil, err3
+	}
+
+	return groups, nil
+}
+
+func (a *API) GetGroupPermissionsForSpace(spacekey, group string) (*GetPermissionsForSpaceType, error) {
+	u := fmt.Sprintf("/rest/extender/1.0/permission/group/%s/getPermissionsForSpace/space/%s", group, spacekey)
+	permissions := new(GetPermissionsForSpaceType)
+	err3 := a.DoRequest(u, "GET", &permissions)
+	if err3 != nil {
+		return nil, err3
+	}
+
+	//defer CleanupH(resp)
+	return permissions, nil
 }
