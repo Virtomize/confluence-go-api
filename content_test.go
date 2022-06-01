@@ -151,7 +151,7 @@ func TestAddContentQueryParams(t *testing.T) {
 func Test_TestGetVersion(t *testing.T) {
 	prepareTest(t, TestGetVersion)
 
-	res, err2 := testClient.GetContentVersion("65551")
+	res, err2 := testClient.GetContentVersion("98319")
 	//	defer CleanupH(resp)
 	if err2 == nil {
 		if res == nil {
