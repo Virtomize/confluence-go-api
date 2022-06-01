@@ -170,7 +170,10 @@ func Test_TestGetVersion(t *testing.T) {
 Requires confluence server up and running...
 TODO - mock
 
-func Test_Localhost(t *testing.T) {
+Add "t_" for now
+
+
+func TesLocalhost(t *testing.T) {
 	//a, err := NewAPI("http://localhost:1990/confluence", "admin", "admin")
 	//a, err := NewAPI("http://192.168.50.40:1990/confluence", "admin", "admin")
 	a, err := NewAPI("http://192.168.50.40:8090", "admin", "admin")

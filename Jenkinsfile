@@ -8,6 +8,9 @@ pipeline {
         GOPATH = "/go"
         HOME = "/home/perolo/Jenkins/workspace/${JOB_NAME}"
     }
+    options { 
+        buildDiscarder(logRotator(numToKeepStr: '10')) 
+    }    
     stages {        
         stage('Pre Test') {
             steps {

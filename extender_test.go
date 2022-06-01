@@ -93,3 +93,21 @@ func Test_TestExtenderGetGroups(t *testing.T) {
 		t.Error("Received nil response.")
 	}
 }
+
+func Test_TestExtenderGetUsers(t *testing.T) {
+	prepareTest(t, TestExtenderGetUsers)
+
+	getUsers, err2 := testClient.GetUsers("confluence-users", nil)
+	//	defer CleanupH(resp)
+	if err2 == nil {
+		if getUsers == nil {
+			t.Error("Expected Users. Users is nil")
+		} else {
+			if len(getUsers.Users) == 0 {
+				t.Errorf("Expected Success, received: %v Users \n", len(getUsers.Users))
+			}
+		}
+	} else {
+		t.Error("Received nil response.")
+	}
+}

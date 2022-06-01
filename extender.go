@@ -140,6 +140,7 @@ type GetGroupMembersOptions struct {
 	StartAt    int `json:"startAt"`
 }
 
+/*
 type GroupsType struct {
 	Total      int      `json:"total"`
 	MaxResults int      `json:"maxResults"`
@@ -147,7 +148,7 @@ type GroupsType struct {
 	StartAt    int      `json:"startAt"`
 	Status     string   `json:"status"`
 }
-
+*/
 //groups, _ := confluence.GetGroups(&gropt)
 
 func (a *API) GetGroups(options *GetGroupMembersOptions) (*GroupsType, error) {
@@ -202,4 +203,22 @@ func (a *API) GetGroupPermissionsForSpace(spacekey, group string) (*GetPermissio
 
 	//defer CleanupH(resp)
 	return permissions, nil
+}
+
+func (a *API) GetUsers(group string, options *GetGroupMembersOptions) (*UsersType, error) {
+
+	u := a.endPoint.String() + fmt.Sprintf("/rest/extender/1.0/group/getUsers/%s", group)
+
+	endpoint, err := addOptions(u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	var users UsersType
+
+	err3 := a.DoRequest(endpoint, "GET", &users)
+	if err3 != nil {
+		return nil, err3
+	}
+	return &users, nil
 }
