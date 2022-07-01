@@ -28,4 +28,8 @@ func TestUser(t *testing.T) {
 	u, err = api.User(":42")
 	assert.NoError(t, err)
 	assert.Equal(t, &User{}, u)
+
+	u, err = api.User("key:42")
+	assert.NoError(t, err)
+	assert.Equal(t, &User{}, u)
 }

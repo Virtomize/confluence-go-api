@@ -335,6 +335,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = User{}
 		case "/wiki/rest/api/user?accountId=42":
 			resp = User{}
+		case "/wiki/rest/api/user?key=42":
+			resp = User{}
 		case "/wiki/rest/api/user/current":
 			resp = User{}
 		case "/wiki/rest/api/user/anonymous":

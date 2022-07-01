@@ -56,7 +56,12 @@ func (a *API) User(query string) (*User, error) {
 	}
 	data := url.Values{}
 	if strings.Contains(query, ":") {
-		data.Set("accountId", strings.Split(query, ":")[1])
+		lookupParams := strings.Split(query, ":")
+		if lookupParams[0] == "key" {
+			data.Set("key", lookupParams[1])
+		} else {
+			data.Set("accountId", lookupParams[1])
+		}
 	} else {
 		data.Set("username", query)
 	}
