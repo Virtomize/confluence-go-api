@@ -67,6 +67,7 @@ type ContentAppearancePublished struct {
 type Links struct {
 	Base   string `json:"base"`
 	TinyUI string `json:"tinyui"`
+	WebUI  string `json:"webui"`
 }
 
 // Ancestor defines ancestors to create sub pages
