@@ -382,6 +382,6 @@ func confluenceRestAPIStub() *httptest.Server {
 			http.Error(w, string(b), http.StatusInternalServerError)
 			return
 		}
-		w.Write(b)
+		_, _ = w.Write(b)
 	}))
 }

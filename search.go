@@ -8,12 +8,12 @@ import (
 
 // Search results
 type Search struct {
-	Results   []Results `json:"results"`
+	Results   []Content `json:"content"`
 	Start     int       `json:"start,omitempty"`
 	Limit     int       `json:"limit,omitempty"`
 	Size      int       `json:"size,omitempty"`
 	ID        string    `json:"id,omitempty"`
-	TotalSize int       `json:"totalSize, omitempty"`
+	TotalSize int       `json:"totalSize,omitempty"`
 }
 
 // SearchQuery defines query parameters used for searchng
@@ -52,7 +52,7 @@ func addSearchQueryParams(query SearchQuery) *url.Values {
 	if query.CQLContext != "" {
 		data.Set("cqlcontext", query.CQLContext)
 	}
-	if query.IncludeArchivedSpaces == true {
+	if query.IncludeArchivedSpaces {
 		data.Set("includeArchivedSpaces", "true")
 	}
 	if query.Limit != 0 {

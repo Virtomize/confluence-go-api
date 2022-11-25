@@ -30,7 +30,7 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	a.username = username
 
 	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: false, MinVersion: tls.VersionTLS12},
 	}
 
 	a.Client = &http.Client{Transport: tr}
@@ -60,6 +60,7 @@ func NewAPIWithClient(location string, client *http.Client) (*API, error) {
 
 // VerifyTLS to enable disable certificate checks
 func (a *API) VerifyTLS(set bool) {
+	// #nosec G402
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: !set},
 	}
