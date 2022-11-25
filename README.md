@@ -90,10 +90,6 @@ The Confluence API documentation [can be found here](https://docs.atlassian.com/
 Thank you for participating to this project.
 Please see our [Contribution Guidlines](https://github.com/virtomize/confluence-go-api/blob/master/CONTRIBUTING.md) for more information.
 
-
-Thank you for participating to this project.
-Please see our [Contribution Guidlines](https://github.com/virtomize/uii-go-cli/blob/master/CONTRIBUTING.md) for more information.
-
 ### Pre-Commit
 
 This repo uses [pre-commit hooks](https://pre-commit.com/). Please install pre-commit and do `pre-commit install`
