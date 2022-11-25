@@ -29,8 +29,9 @@ func NewAPI(location string, username string, token string) (*API, error) {
 	a.token = token
 	a.username = username
 
+	// #nosec G402
 	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: false, MinVersion: tls.VersionTLS12},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
 	}
 
 	a.Client = &http.Client{Transport: tr}
