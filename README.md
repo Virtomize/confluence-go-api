@@ -4,7 +4,6 @@
 [![GoDoc](https://img.shields.io/badge/godoc-reference-green.svg)](https://godoc.org/github.com/virtomize/confluence-go-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/virtomize/confluence-go-api)](https://goreportcard.com/report/github.com/virtomize/confluence-go-api)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/virtomize/confluence-go-api/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/virtomize/confluence-go-api.svg?branch=master)](https://travis-ci.com/virtomize/confluence-go-api)
 [![Built with Mage](https://magefile.org/badge.svg)](https://magefile.org)
 
 
@@ -70,7 +69,7 @@ func main() {
 
 ### Using a Personal Access Token
 
-To generate a confluence personal access token (PAT) see this article: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html. Only set the token in the NewAPI function
+To generate a confluence personal access token (PAT) see this article: [using personal access tokens](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html). Only set the token in the NewAPI function
 
 ```
   api, err := goconfluence.NewAPI("https://<your-domain>.atlassian.net/wiki/rest/api", "", "<personal-access-token>")
@@ -90,4 +89,21 @@ The Confluence API documentation [can be found here](https://docs.atlassian.com/
 
 Thank you for participating to this project.
 Please see our [Contribution Guidlines](https://github.com/virtomize/confluence-go-api/blob/master/CONTRIBUTING.md) for more information.
+
+
+Thank you for participating to this project.
+Please see our [Contribution Guidlines](https://github.com/virtomize/uii-go-cli/blob/master/CONTRIBUTING.md) for more information.
+
+### Pre-Commit
+
+This repo uses [pre-commit hooks](https://pre-commit.com/). Please install pre-commit and do `pre-commit install`
+
+### Conventional Commits
+
+Format commit messaged according to [Conventional Commits standard](https://www.conventionalcommits.org/en/v1.0.0/).
+
+### Semantic Versioning
+
+Whenever you need to version something make use of [Semantic Versioning](https://semver.org).
+
 
