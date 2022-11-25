@@ -29,7 +29,7 @@ type Content struct {
 	Ancestors []Ancestor `json:"ancestors,omitempty"`
 	Body      Body       `json:"body"`
 	Version   *Version   `json:"version,omitempty"`
-	Space     Space      `json:"space"`
+	Space     *Space     `json:"space"`
 	History   *History   `json:"history,omitempty"`
 	Links     *Links     `json:"_links,omitempty"`
 	Metadata  *Metadata  `json:"metadata"`
