@@ -45,7 +45,10 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp.Body.Close()
+	err = resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
 	Debug("====== Response Body ======")
 	Debug(string(res))
@@ -111,7 +114,11 @@ func (a *API) SendContentAttachmentRequest(ep *url.URL, attachmentName string, a
 	// setup body for mulitpart file, adding minorEdit option
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	writer.WriteField("minorEdit", "true")
+	err := writer.WriteField("minorEdit", "true")
+	if err != nil {
+		return nil, err
+	}
+
 	part, err := writer.CreateFormFile("file", attachmentName)
 	if err != nil {
 		return nil, err
