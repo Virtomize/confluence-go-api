@@ -101,6 +101,7 @@ type Version struct {
 	MinorEdit bool   `json:"minorEdit"`
 	Message   string `json:"message,omitempty"`
 	By        *User  `json:"by,omitempty"`
+	When      string `json:"when,omitempty"`
 }
 
 // Space holds the Space information of a Content Page
