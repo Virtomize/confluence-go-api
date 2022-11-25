@@ -29,7 +29,7 @@ type Content struct {
 	Ancestors []Ancestor `json:"ancestors,omitempty"`
 	Body      Body       `json:"body"`
 	Version   *Version   `json:"version,omitempty"`
-	Space     Space      `json:"space"`
+	Space     *Space     `json:"space"`
 	History   *History   `json:"history,omitempty"`
 	Links     *Links     `json:"_links,omitempty"`
 	Metadata  *Metadata  `json:"metadata"`
@@ -101,6 +101,7 @@ type Version struct {
 	MinorEdit bool   `json:"minorEdit"`
 	Message   string `json:"message,omitempty"`
 	By        *User  `json:"by,omitempty"`
+	When      string `json:"when,omitempty"`
 }
 
 // Space holds the Space information of a Content Page

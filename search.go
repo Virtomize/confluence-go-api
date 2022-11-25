@@ -8,7 +8,8 @@ import (
 
 // Search results
 type Search struct {
-	Results   []Content `json:"content"`
+	Content   []Content `json:"content"`
+	Results   []Content `json:"results"`
 	Start     int       `json:"start,omitempty"`
 	Limit     int       `json:"limit,omitempty"`
 	Size      int       `json:"size,omitempty"`

@@ -53,7 +53,7 @@ func main() {
 		Version: &goconfluence.Version{
 			Number: 1,
 		},
-		Space: goconfluence.Space{
+		Space: &goconfluence.Space{
 			Key: "SomeSpaceKey", // Space
 		},
 	}
@@ -71,7 +71,7 @@ func main() {
 		Type:  "page",
 		Title: "updated-title",
 		Ancestors: []goconfluence.Ancestor{
-			goconfluence.Ancestor{
+			{
 				ID: "2345678",
 			},
 		},
@@ -84,7 +84,7 @@ func main() {
 		Version: &goconfluence.Version{
 			Number: 2,
 		},
-		Space: goconfluence.Space{
+		Space: &goconfluence.Space{
 			Key: "SomeSpaceKey",
 		},
 	}
