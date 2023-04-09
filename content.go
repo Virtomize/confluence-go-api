@@ -199,7 +199,7 @@ func (a *API) GetContent(query ContentQuery) (*ContentSearch, error) {
 // GetChildPages returns a content list of child page objects
 func (a *API) GetChildPages(id string) (*Search, error) {
 	var (
-		results      []Content
+		results      []Results
 		searchResult Search
 	)
 
