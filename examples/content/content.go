@@ -38,9 +38,9 @@ func main() {
 	// create content
 	data := &goconfluence.Content{
 		Type:  "page",           // can also be blogpost
-		Title: "Some-Test-Page", // page title
+		Title: "Some-Test-Page", // page title (mandatory)
 		Ancestors: []goconfluence.Ancestor{
-			goconfluence.Ancestor{
+			{
 				ID: "123456", // ancestor-id optional if you want to create sub-pages
 			},
 		},
@@ -50,7 +50,7 @@ func main() {
 				Representation: "storage",
 			},
 		},
-		Version: &goconfluence.Version{
+		Version: &goconfluence.Version{ // mandatory
 			Number: 1,
 		},
 		Space: &goconfluence.Space{
