@@ -42,9 +42,9 @@ type Metadata struct {
 
 // Properties defines properties of the editor
 type Properties struct {
-	Editor                     *Editor                     `json:"editor"`
-	ContentAppearanceDraft     *ContentAppearanceDraft     `json:"content_appearance_draft"`
-	ContentAppearancePublished *ContentAppearancePublished `json:"content_appearance_published"`
+	Editor                     *Editor                     `json:"editor,omitempty"`
+	ContentAppearanceDraft     *ContentAppearanceDraft     `json:"content-appearance-draft"`
+	ContentAppearancePublished *ContentAppearancePublished `json:"content-appearance-published"`
 }
 
 // Editor contains editor information
