@@ -33,11 +33,12 @@ type Attachment struct {
 	} `json:"_links"`
 }
 
-// getUserEndpoint creates the correct api endpoint by given id
+// getAttachmentEndpoint creates the correct api endpoint by given id
 func (a *API) getAttachmentEndpoint(id string) (*url.URL, error) {
 	return url.ParseRequestURI(a.endPoint.String() + "/attachments/" + id)
 }
 
+// Get info on specific attachment by id
 func (a *API) GetAttachmentById(id string) (*Attachment, error) {
 	ep, err := a.getAttachmentEndpoint(id)
 	if err != nil {
