@@ -27,6 +27,6 @@ supported features:
   - get, add, delete labels
   - search using CQL
 
-see https://github.com/coggsflod/confluence-go-api/tree/master/examples for more information and usage examples
+see https://github.com/virtomize/confluence-go-api/tree/master/examples for more information and usage examples
 */
 package goconfluence

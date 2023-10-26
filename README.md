@@ -1,9 +1,9 @@
 # confluence-go-api
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBXHBYFU44T5W&source=url)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-green.svg)](https://godoc.org/github.com/coggsflod/confluence-go-api)
-[![Go Report Card](https://goreportcard.com/badge/github.com/coggsflod/confluence-go-api)](https://goreportcard.com/report/github.com/coggsflod/confluence-go-api)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coggsflod/confluence-go-api/blob/master/LICENSE)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-green.svg)](https://godoc.org/github.com/virtomize/confluence-go-api)
+[![Go Report Card](https://goreportcard.com/badge/github.com/virtomize/confluence-go-api)](https://goreportcard.com/report/github.com/virtomize/confluence-go-api)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/virtomize/confluence-go-api/blob/master/LICENSE)
 [![Built with Mage](https://magefile.org/badge.svg)](https://magefile.org)
 
 
@@ -30,7 +30,7 @@ If this project helps you, feel free to give us a cup of coffee :).
 If you already installed GO on your system and configured it properly than its simply:
 
 ```
-go get github.com/coggsflod/confluence-go-api
+go get github.com/virtomize/confluence-go-api
 ```
 
 If not follow [these instructions](https://golang.org/doc/install)
@@ -46,7 +46,7 @@ import (
   "fmt"
   "log"
 
-  "github.com/coggsflod/confluence-go-api"
+  "github.com/virtomize/confluence-go-api"
 )
 
 func main() {
@@ -77,18 +77,18 @@ To generate a confluence personal access token (PAT) see this article: [using pe
 
 ### Advanced examples
 
-see [examples](https://github.com/coggsflod/confluence-go-api/tree/master/examples) for some more usage examples
+see [examples](https://github.com/virtomize/confluence-go-api/tree/master/examples) for some more usage examples
 
 ## Code Documentation
 
-You find the full [code documentation here](https://godoc.org/github.com/coggsflod/confluence-go-api).
+You find the full [code documentation here](https://godoc.org/github.com/virtomize/confluence-go-api).
 
 The Confluence API documentation [can be found here](https://docs.atlassian.com/ConfluenceServer/rest/6.9.1/).
 
 ## Contribution
 
 Thank you for participating to this project.
-Please see our [Contribution Guidlines](https://github.com/coggsflod/confluence-go-api/blob/master/CONTRIBUTING.md) for more information.
+Please see our [Contribution Guidlines](https://github.com/virtomize/confluence-go-api/blob/master/CONTRIBUTING.md) for more information.
 
 ### Pre-Commit
 

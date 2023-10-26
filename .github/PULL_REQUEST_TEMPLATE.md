@@ -4,7 +4,7 @@ the requirements below.
 
 Bug fixes and new features should include unit tests.
 
-Contributors guide: https://github.com/coggsflod/confluence-go-api/blob/master/CONTRIBUTING.md
+Contributors guide: https://github.com/virtomize/confluence-go-api/blob/master/CONTRIBUTING.md
 -->
 
 ##### Checklist

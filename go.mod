@@ -1,4 +1,4 @@
-module github.com/coggsflod/confluence-go-api
+module github.com/virtomize/confluence-go-api
 
 go 1.13
 
