@@ -373,6 +373,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = TemplateSearch{}
 		case "/wiki/rest/api/template/page":
 			resp = TemplateSearch{}
+		case "/wiki/api/v2/attachments/2495990589":
+			resp = Attachment{}
 		default:
 			http.Error(w, "not found", http.StatusNotFound)
 			return
