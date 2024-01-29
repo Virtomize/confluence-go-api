@@ -15,7 +15,7 @@ type Cluster struct {
 	//Links []*Link `json:"links"`
 
 	// nodes
-	Nodes []*ClusterNodes `json:"nodes"`
+	Nodes []*ClusterNode `json:"nodes"`
 
 	// original version
 	OriginalVersion string `json:"originalVersion,omitempty"`
@@ -30,7 +30,7 @@ type Cluster struct {
 }
 
 
-type ClusterNodes struct {
+type ClusterNode struct {
 
 	// active user count
 	ActiveUserCount int64 `json:"activeUserCount,omitempty"`
@@ -74,7 +74,7 @@ type ClusterNodeFinalization struct {
 	Errors []*ClusterNodeFinalizationError `json:"errors"`
 
 	// last requested
-	LastRequested string `json:"lastRequested,omitempty"`
+	LastRequested int64 `json:"lastRequested,omitempty"`
 }
 
 type ClusterNodeFinalizationError struct {
@@ -91,9 +91,9 @@ type ClusterNodeFinalizationError struct {
 }
 
 
-// getZduClusterEndpoint creates the correct api endpoint by given id
+// getZduClusterEndpoint creates the correct api endpoint to get the zdu cluster
 func (a *API) getZduClusterEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/zdu/cluster")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/zdu/cluster")
 }
 
 func (a *API) ZduCluster() (*Cluster, error) {

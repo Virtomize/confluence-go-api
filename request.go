@@ -355,6 +355,7 @@ func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 		return nil, err
 	}
 
+	// fmt.Printf("\n%s\n", res)
 	var cluster Cluster
 
 	err = json.Unmarshal(res, &cluster)
@@ -363,4 +364,98 @@ func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 	}
 
 	return &cluster, nil
+}
+
+// SendHealthCheckStatusesRequest TODO
+func (a *API) SendHealthCheckStatusesRequest(ep *url.URL, method string) (*HealthCheckStatuses, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fmt.Printf("\n%s\n", res)
+	var healthCheckStatuses HealthCheckStatuses
+
+	err = json.Unmarshal(res, &healthCheckStatuses)
+	if err != nil {
+		return nil, err
+	}
+
+	return &healthCheckStatuses, nil
+}
+
+// SendPreUpgradeInfoRequest TODO
+func (a *API) SendPreUpgradeInfoRequest(ep *url.URL, method string) (*PreUpgradeInfo, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fmt.Printf("\n%s\n", res)
+	var preUpgradeInfo PreUpgradeInfo
+
+	err = json.Unmarshal(res, &preUpgradeInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return &preUpgradeInfo, nil
+}
+
+func (a *API) SendProductUpdatesRequest(ep *url.URL, method string) (*ProductUpdates, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fmt.Printf("\n%s\n", res)
+	var pluginUpdates ProductUpdates
+
+	err = json.Unmarshal(res, &pluginUpdates)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pluginUpdates, nil
+}
+
+func (a *API) SendProductUpdateCompatibilitiesRequest(ep *url.URL, method string) (*ProductUpdateCompatibilities, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fmt.Printf("\n%s\n", res)
+	var productUpdateCompatibilities ProductUpdateCompatibilities
+
+	err = json.Unmarshal(res, &productUpdateCompatibilities)
+	if err != nil {
+		return nil, err
+	}
+
+	return &productUpdateCompatibilities, nil
 }
