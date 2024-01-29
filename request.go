@@ -341,3 +341,26 @@ func (a *API) SendContentVersionRequest(ep *url.URL, method string) (*ContentVer
 
 	return &versionResult, nil
 }
+
+// SendClusterRequest sends cluster related requests
+func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var cluster Cluster
+
+	err = json.Unmarshal(res, &cluster)
+	if err != nil {
+		return nil, err
+	}
+
+	return &cluster, nil
+}
