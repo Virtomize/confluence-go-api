@@ -41,6 +41,22 @@ type ProductUpdatePluginCompatibilityLink struct {
 	PluginLogo string `json:"plugin-logo,omitempty"`
 }
 
+type PluginMarketplaceInfos struct {
+	Key    string `json:"key,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Update Update `json:"update,omitempty"`
+}
+
+type Update struct {
+	Links       Link   `json:"links,omitempty"`
+	Version     string `json:"version,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+type Link struct {
+	Binary string `json:"binary,omitempty"`
+}
+
 func (a *API) PluginUpdates() (*ProductUpdates, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/product-updates/")
 	if err != nil {
@@ -56,4 +72,23 @@ func (a *API) PluginUpdateCompatibility(compatibilityLink string) (*ProductUpdat
 		return nil, err
 	}
 	return a.SendProductUpdateCompatibilitiesRequest(ep, "GET")
+}
+
+func (a *API) PluginMarketplaceInfos(pluginKey string) (*PluginMarketplaceInfos, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/" + pluginKey + "/marketplace")
+	fmt.Printf("\n%s\n", ep)
+	if err != nil {
+		return nil, err
+	}
+	return a.SendPluginMarketplaceInfosRequest(ep, "GET")
+}
+
+func (a *API) GetUpmToken() {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/?os_authType=basic")
+	// accept: application/vnd.atl.plugins.installed+json
+	fmt.Printf("\n%s\n", ep)
+	if err != nil {
+		fmt.Print(err)
+	}
+	a.SendGetUpmToken(ep, "GET")
 }

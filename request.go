@@ -459,3 +459,26 @@ func (a *API) SendProductUpdateCompatibilitiesRequest(ep *url.URL, method string
 
 	return &productUpdateCompatibilities, nil
 }
+
+func (a *API) SendPluginMarketplaceInfosRequest(ep *url.URL, method string) (*PluginMarketplaceInfos, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fmt.Printf("\n%s\n", res)
+	var pluginMarketplaceInfos PluginMarketplaceInfos
+
+	err = json.Unmarshal(res, &pluginMarketplaceInfos)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pluginMarketplaceInfos, nil
+}
