@@ -65,6 +65,8 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 		return nil, fmt.Errorf("service is not available: %s", resp.Status)
 	case http.StatusInternalServerError:
 		return nil, fmt.Errorf("internal server error: %s", resp.Status)
+	case http.StatusForbidden:
+		return nil, fmt.Errorf("forbidden: %s", resp.Status)
 	case http.StatusConflict:
 		return nil, fmt.Errorf("conflict: %s", resp.Status)
 	}
@@ -482,3 +484,56 @@ func (a *API) SendPluginMarketplaceInfosRequest(ep *url.URL, method string) (*Pl
 
 	return &pluginMarketplaceInfos, nil
 }
+
+func (a *API) SendUpmTokenRequest(ep *url.URL, method string) (*string, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.atl.plugins.installed+json")
+
+	if (a.username != "") || (a.token != "") {
+		a.Auth(req)
+	}
+
+	res, err := a.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var upm string
+	upm = res.Header.Get("Upm-Token")
+	if err != nil {
+		return nil, err
+	}
+
+	return &upm, nil
+}
+
+func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, pluginName, pluginVersion string) ([]byte, error) {
+
+	var jsonStr = []byte(fmt.Sprintf(`{"pluginUri":"%s","pluginName": "%s","pluginVersion": "%s"}`, pluginBinaryUri, pluginName, pluginVersion))
+	req, err := http.NewRequest(method, ep.String(), bytes.NewBuffer(jsonStr))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.atl.plugins.install.uri+json")
+	fmt.Printf("\n%+v\n", req)
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Printf("\n%+v\n", res)
+	var pluginMarketplaceInfos PluginMarketplaceInfos
+
+	err = json.Unmarshal(res, &pluginMarketplaceInfos)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+

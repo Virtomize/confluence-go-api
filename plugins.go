@@ -67,7 +67,7 @@ func (a *API) PluginUpdates() (*ProductUpdates, error) {
 
 func (a *API) PluginUpdateCompatibility(compatibilityLink string) (*ProductUpdateCompatibilities, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + compatibilityLink)
-        fmt.Printf("\n%s\n", ep)
+        // fmt.Printf("\n%s\n", ep)
 	if err != nil {
 		return nil, err
 	}
@@ -76,19 +76,27 @@ func (a *API) PluginUpdateCompatibility(compatibilityLink string) (*ProductUpdat
 
 func (a *API) PluginMarketplaceInfos(pluginKey string) (*PluginMarketplaceInfos, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/" + pluginKey + "/marketplace")
-	fmt.Printf("\n%s\n", ep)
+	// fmt.Printf("\n%s\n", ep)
 	if err != nil {
 		return nil, err
 	}
 	return a.SendPluginMarketplaceInfosRequest(ep, "GET")
 }
 
-func (a *API) GetUpmToken() {
+func (a *API) GetUpmToken() (*string, error){
 	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/?os_authType=basic")
 	// accept: application/vnd.atl.plugins.installed+json
-	fmt.Printf("\n%s\n", ep)
+	// fmt.Printf("\n%s\n", ep)
 	if err != nil {
 		fmt.Print(err)
 	}
-	a.SendGetUpmToken(ep, "GET")
+	return a.SendUpmTokenRequest(ep, "GET")
+}
+
+func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken string) ([]byte, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + fmt.Sprintf("/rest/plugins/1.0/?token=%s", upmToken))
+	if err != nil {
+		fmt.Print(err)
+	}
+	return a.SendPluginUpdateRequest(ep, "POST", pluginBinaryUri, pluginName, pluginVersion)
 }
