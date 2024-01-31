@@ -29,7 +29,6 @@ type Cluster struct {
 	UpgradeModeEnabled *bool `json:"upgradeModeEnabled"`
 }
 
-
 type ClusterNode struct {
 
 	// active user count
@@ -48,7 +47,7 @@ type ClusterNode struct {
 	IPAddress string `json:"ipAddress,omitempty"`
 
 	// links
-//	Links []*Link `json:"links"`
+	//	Links []*Link `json:"links"`
 
 	// local
 	// Required: true
@@ -89,7 +88,6 @@ type ClusterNodeFinalizationError struct {
 	// exception message
 	ExceptionMessage string `json:"exceptionMessage,omitempty"`
 }
-
 
 // getZduClusterEndpoint creates the correct api endpoint to get the zdu cluster
 func (a *API) getZduClusterEndpoint() (*url.URL, error) {

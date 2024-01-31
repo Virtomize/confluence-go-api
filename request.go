@@ -55,7 +55,7 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 	Debug("====== /Response Body ======")
 
 	switch resp.StatusCode {
-	case http.StatusOK, http.StatusCreated, http.StatusPartialContent:
+	case http.StatusOK, http.StatusCreated, http.StatusPartialContent, 202:
 		return res, nil
 	case http.StatusNoContent, http.StatusResetContent:
 		return nil, nil
@@ -474,7 +474,6 @@ func (a *API) SendPluginMarketplaceInfosRequest(ep *url.URL, method string) (*Pl
 		return nil, err
 	}
 
-	// fmt.Printf("\n%s\n", res)
 	var pluginMarketplaceInfos PluginMarketplaceInfos
 
 	err = json.Unmarshal(res, &pluginMarketplaceInfos)
@@ -511,29 +510,25 @@ func (a *API) SendUpmTokenRequest(ep *url.URL, method string) (*string, error) {
 	return &upm, nil
 }
 
-func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, pluginName, pluginVersion string) ([]byte, error) {
+func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, pluginName, pluginVersion string) (http.Header, error) {
 
 	var jsonStr = []byte(fmt.Sprintf(`{"pluginUri":"%s","pluginName": "%s","pluginVersion": "%s"}`, pluginBinaryUri, pluginName, pluginVersion))
 	req, err := http.NewRequest(method, ep.String(), bytes.NewBuffer(jsonStr))
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", "application/vnd.atl.plugins.install.uri+json")
-	fmt.Printf("\n%+v\n", req)
+	req.Header.Set("Content-Type", "application/vnd.atl.plugins.install.uri+json")
+	req.Header.Set("Accept", "application/json")
 
-	res, err := a.Request(req)
-	if err != nil {
-		return nil, err
+	if (a.username != "") || (a.token != "") {
+		a.Auth(req)
 	}
 
+	res, err := a.Client.Do(req)
 	fmt.Printf("\n%+v\n", res)
-	var pluginMarketplaceInfos PluginMarketplaceInfos
-
-	err = json.Unmarshal(res, &pluginMarketplaceInfos)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	return res.Header, nil
 }
-

@@ -31,10 +31,10 @@ type HealthCheckStatus struct {
 }
 
 type PreUpgradeInfo struct {
-	Versions        []ConfluenceVersion       `json:"versions,omitempty"`
-	SelectedVersion Version         `json:"selectedVersion,omitempty"`
-	InstanceData    InstanceData    `json:"instanceData,omitempty"`
-	Stale           bool            `json:"stale,omitempty"`
+	Versions        []ConfluenceVersion `json:"versions,omitempty"`
+	SelectedVersion Version             `json:"selectedVersion,omitempty"`
+	InstanceData    InstanceData        `json:"instanceData,omitempty"`
+	Stale           bool                `json:"stale,omitempty"`
 }
 
 type SubSection struct {
@@ -43,9 +43,9 @@ type SubSection struct {
 }
 
 type UpgradePath struct {
-	AnalyticsKey string        `json:"analyticsKey,omitempty"`
-	Title        string        `json:"title,omitempty"`
-	SubSections  []SubSection  `json:"subSections,omitempty"`
+	AnalyticsKey string       `json:"analyticsKey,omitempty"`
+	Title        string       `json:"title,omitempty"`
+	SubSections  []SubSection `json:"subSections,omitempty"`
 }
 
 type ConfluenceVersion struct {
