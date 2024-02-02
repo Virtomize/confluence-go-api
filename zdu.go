@@ -1,6 +1,7 @@
 package goconfluence
 
 import (
+	"fmt"
 	"net/url"
 )
 
@@ -100,4 +101,31 @@ func (a *API) ZduCluster() (*Cluster, error) {
 		return nil, err
 	}
 	return a.SendClusterRequest(ep, "GET")
+}
+
+func (a *API) ZduStartUpgrade() (*Cluster, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/zdu/start")
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	return a.SendClusterRequest(ep, "POST")
+}
+
+func (a *API) ZduCancelUpgrade() (*Cluster, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/zdu/cancel")
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	return a.SendClusterRequest(ep, "POST")
+}
+
+func (a *API) ZduFinalizeUpgrade() (*Cluster, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/zdu/approve")
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	return a.SendClusterRequest(ep, "POST")
 }
