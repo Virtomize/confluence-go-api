@@ -13,6 +13,30 @@ import (
 	"strings"
 )
 
+var default_headers = http.Header{
+	"Content-Type": {"application/json"},
+	"Accept":       {"application/json"},
+}
+
+var experimental_headers = http.Header{
+	"Content-Type":      {"application/json"},
+	"Accept":            {"application/json"},
+	"X-ExperimentalApi": {"opt-in"},
+}
+var form_token_headers = http.Header{
+	"Content-Type":      {"application/x-www-form-urlencoded; charset=UTF-8"},
+	"X-Atlassian-Token": {"no-check"},
+}
+var no_check_headers = http.Header{"X-Atlassian-Token": {"no-check"}}
+var safe_mode_headers = http.Header{
+	"X-Atlassian-Token": {"nocheck"},
+	"Content-Type":      {"application/vnd.atl.plugins.safe.mode.flag+json"},
+}
+var experimental_headers_general = http.Header{
+	"X-Atlassian-Token": {"no-check"},
+	"X-ExperimentalApi": {"opt-in"},
+}
+
 // Request implements the basic Request function
 func (a *API) Request(req *http.Request) ([]byte, error) {
 	req.Header.Add("Accept", "application/json, */*")
@@ -348,6 +372,10 @@ func (a *API) SendContentVersionRequest(ep *url.URL, method string) (*ContentVer
 func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 
 	req, err := http.NewRequest(method, ep.String(), nil)
+
+	// https://confluence.atlassian.com/cloudkb/xsrf-check-failed-when-calling-cloud-apis-826874382.html
+	req.Header = no_check_headers
+
 	if err != nil {
 		return nil, err
 	}
