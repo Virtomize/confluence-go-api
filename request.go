@@ -381,6 +381,8 @@ func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 		return nil, err
 	}
 
+	req.Header.Set("X-Atlassian-Token", "no-check")
+
 	res, err := a.Request(req)
 	if err != nil {
 		return nil, err
@@ -410,6 +412,7 @@ func (a *API) SendHealthCheckStatusesRequest(ep *url.URL, method string) (*Healt
 	if err != nil {
 		return nil, err
 	}
+
 
 	// fmt.Printf("\n%s\n", res)
 	var healthCheckStatuses HealthCheckStatuses
@@ -563,7 +566,7 @@ func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, plug
 	}
 
 	res, err := a.Client.Do(req)
-	fmt.Printf("\n%+v\n", res)
+	// fmt.Printf("\n%+v\n", res)
 	if err != nil {
 		return nil, err
 	}
