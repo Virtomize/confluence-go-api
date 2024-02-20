@@ -64,6 +64,7 @@ func (a *API) Request(req *http.Request) ([]byte, error) {
 		return nil, err
 	}
 	Debug(fmt.Sprintf("====== Response Status Code: %d ======", resp.StatusCode))
+	Debug(fmt.Sprintf("====== Response Headers: %v ======", resp.Header))
 
 	res, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -385,7 +386,6 @@ func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 		return nil, err
 	}
 
-	// fmt.Printf("\n%s\n", res)
 	var cluster Cluster
 
 	err = json.Unmarshal(res, &cluster)
@@ -400,6 +400,8 @@ func (a *API) SendClusterRequest(ep *url.URL, method string) (*Cluster, error) {
 func (a *API) SendHealthCheckStatusesRequest(ep *url.URL, method string) (*HealthCheckStatuses, error) {
 
 	req, err := http.NewRequest(method, ep.String(), nil)
+
+	req.Header = default_headers
 	if err != nil {
 		return nil, err
 	}
@@ -424,6 +426,8 @@ func (a *API) SendHealthCheckStatusesRequest(ep *url.URL, method string) (*Healt
 func (a *API) SendPreUpgradeInfoRequest(ep *url.URL, method string) (*PreUpgradeInfo, error) {
 
 	req, err := http.NewRequest(method, ep.String(), nil)
+	req.Header = default_headers
+
 	if err != nil {
 		return nil, err
 	}
@@ -470,6 +474,7 @@ func (a *API) SendProductUpdatesRequest(ep *url.URL, method string) (*ProductUpd
 func (a *API) SendProductUpdateCompatibilitiesRequest(ep *url.URL, method string) (*ProductUpdateCompatibilities, error) {
 
 	req, err := http.NewRequest(method, ep.String(), nil)
+	req.Header.Set("X-Atlassian-Token", "no-check")
 	if err != nil {
 		return nil, err
 	}
@@ -497,6 +502,8 @@ func (a *API) SendPluginMarketplaceInfosRequest(ep *url.URL, method string) (*Pl
 		return nil, err
 	}
 
+	req.Header.Set("X-Atlassian-Token", "no-check")
+
 	res, err := a.Request(req)
 	if err != nil {
 		return nil, err
@@ -519,6 +526,7 @@ func (a *API) SendUpmTokenRequest(ep *url.URL, method string) (*string, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/vnd.atl.plugins.installed+json")
+	req.Header.Set("X-Atlassian-Token", "no-check")
 
 	if (a.username != "") || (a.token != "") {
 		a.Auth(req)
@@ -542,11 +550,13 @@ func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, plug
 
 	var jsonStr = []byte(fmt.Sprintf(`{"pluginUri":"%s","pluginName": "%s","pluginVersion": "%s"}`, pluginBinaryUri, pluginName, pluginVersion))
 	req, err := http.NewRequest(method, ep.String(), bytes.NewBuffer(jsonStr))
+
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/vnd.atl.plugins.install.uri+json")
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-Atlassian-Token", "no-check")
 
 	if (a.username != "") || (a.token != "") {
 		a.Auth(req)
@@ -559,4 +569,29 @@ func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, plug
 	}
 
 	return res.Header, nil
+}
+
+func (a *API) SendGetInstalledMarketplacePluginsRequest(ep *url.URL, method string) (*InstalledMarketplacePlugins, error) {
+
+	req, err := http.NewRequest(method, ep.String(), nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/vnd.atl.plugins+json")
+
+	res, err := a.Request(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var installedMarketplacePlugins InstalledMarketplacePlugins
+
+	err = json.Unmarshal(res, &installedMarketplacePlugins)
+	if err != nil {
+		return nil, err
+	}
+
+	return &installedMarketplacePlugins, nil
 }

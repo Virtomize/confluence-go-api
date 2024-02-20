@@ -75,6 +75,7 @@ type InstanceData struct {
 
 func (a *API) HealthCheckStatuses() (*HealthCheckStatuses, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/troubleshooting/1.0/check")
+
 	if err != nil {
 		return nil, err
 	}

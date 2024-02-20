@@ -50,12 +50,6 @@ type PluginMarketplaceInfos struct {
 	Update Update `json:"update,omitempty"`
 }
 
-type Update struct {
-	Links       Link   `json:"links,omitempty"`
-	Version     string `json:"version,omitempty"`
-	Description string `json:"description,omitempty"`
-}
-
 type Link struct {
 	Binary string `json:"binary,omitempty"`
 }
@@ -79,6 +73,43 @@ type PluginInstallationStatusResponseStatus struct {
 type PluginInstallationStatusResponseLinks struct {
 	Self      string `json:"self,omitempty"`
 	Alternate string `json:"alternate,omitempty"`
+}
+
+// start
+type InstalledMarketplacePlugins struct {
+	Plugins []Plugin `json:"plugins"`
+}
+
+type Plugin struct {
+	Key             string        `json:"key"`
+	Name            string        `json:"name"`
+	Incompatible    bool          `json:"incompatible"`
+	UpdateAvailable bool          `json:"updateAvailable"`
+	PrimaryAction   PrimaryAction `json:"primaryAction,omitempty"`
+	Update          Update        `json:"update,omitempty"`
+}
+
+type PrimaryAction struct {
+	Name                            string `json:"name"`
+	Priority                        int    `json:"priority"`
+	ActionRequired                  bool   `json:"actionRequired"`
+	Incompatible                    bool   `json:"incompatible"`
+	NonDataCenterApproved           bool   `json:"nonDataCenterApproved"`
+	LicenseIncompatibleInDataCenter bool   `json:"licenseIncompatibleInDataCenter"`
+}
+
+type Update struct {
+	Links                      Link          `json:"links,omitempty"`
+	Version                    string        `json:"version,omitempty"`
+	VersionDetails             VersionDetail `json:"versionDetails,omitempty"`
+	Installable                bool          `json:"installable,omitempty"`
+	LicenseCompatible          bool          `json:"licenseCompatible,omitempty"`
+	StatusDataCenterCompatible bool          `json:"statusDataCenterCompatible,omitempty"`
+}
+
+type VersionDetail struct {
+	Deployable bool `json:"deployable"`
+	Stable     bool `json:"stable"`
 }
 
 func (a *API) PluginUpdates() (*ProductUpdates, error) {
@@ -117,6 +148,16 @@ func (a *API) GetUpmToken() (*string, error) {
 	return a.SendUpmTokenRequest(ep, "GET")
 }
 
+func (a *API) GetInstalledMarketplacePlugins() (*InstalledMarketplacePlugins, error) {
+	ep, err := url.ParseRequestURI(a.endPoint.String() + "/rest/plugins/1.0/installed-marketplace?updates=true")
+	// accept: application/vnd.atl.plugins.installed+json
+	// fmt.Printf("\n%s\n", ep)
+	if err != nil {
+		fmt.Print(err)
+	}
+	return a.SendGetInstalledMarketplacePluginsRequest(ep, "GET")
+}
+
 func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken string) (bool, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + fmt.Sprintf("/rest/plugins/1.0/?token=%s", upmToken))
 	if err != nil {
@@ -126,6 +167,7 @@ func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken 
 	if err != nil {
 		fmt.Print(err)
 	}
+
 	// The location header contains the url to the update status check
 	updateStatusUrl := responseHeaders.Get("Location")
 	if updateStatusUrl == "" {

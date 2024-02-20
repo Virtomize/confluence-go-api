@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 )
 
@@ -34,7 +35,15 @@ func NewAPI(location string, username string, token string) (*API, error) {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
 	}
 
-	a.Client = &http.Client{Transport: tr}
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	a.Client = &http.Client{
+		Transport: tr,
+		Jar:       jar,
+	}
 
 	return a, nil
 }
