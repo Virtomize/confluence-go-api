@@ -28,7 +28,7 @@ type SearchQuery struct {
 
 // getContentEndpoint creates the correct api endpoint by given id
 func (a *API) getSearchEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/search")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/content/search")
 }
 
 // Search querys confluence using CQL
