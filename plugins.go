@@ -3,6 +3,7 @@ package goconfluence
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"time"
@@ -160,10 +161,13 @@ func (a *API) GetInstalledMarketplacePlugins() (*InstalledMarketplacePlugins, er
 
 func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken string) (bool, error) {
 	ep, err := url.ParseRequestURI(a.endPoint.String() + fmt.Sprintf("/rest/plugins/1.0/?token=%s", upmToken))
+
 	if err != nil {
 		fmt.Print(err)
 	}
+
 	responseHeaders, err := a.SendPluginUpdateRequest(ep, "POST", pluginBinaryUri, pluginName, pluginVersion)
+
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -181,35 +185,40 @@ func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken 
 	for i := 0; i < 30; i++ {
 		time.Sleep(1 * time.Second)
 		req, err := http.NewRequest("GET", ep.String(), nil)
+
 		if err != nil {
 			return false, err
 		}
+
 		if (a.username != "") || (a.token != "") {
 			a.Auth(req)
 		}
 		res, err := a.Client.Do(req)
+
 		if err != nil {
 			fmt.Print("ERROR")
 			fmt.Printf("\n%#v\n", res)
 			fmt.Print(err)
 		}
-		fmt.Printf("\n%v\n", res.StatusCode)
+
 		if res.StatusCode != 200 {
 			fmt.Print("HTTP ERROR (not 200)")
 			fmt.Printf("\n%#v\n", res)
 			return false, errors.New("http error blabla")
+
 		}
+
 		contentTypeHeader := string(res.Header.Get("Content-Type"))
 
 		if contentTypeHeader == "application/vnd.atl.plugins.plugin+json" {
-			fmt.Print("plugin update done\n")
+			slog.Debug("plugin update done")
 			return true, nil
 		}
 		if contentTypeHeader == "application/vnd.atl.plugins.install.installing+json" {
-			fmt.Print("plugin update is installing\n")
+			slog.Debug("plugin update is installing")
 		}
 		if contentTypeHeader == "application/vnd.atl.plugins.install.downloading+json" {
-			fmt.Print("plugin update is downloading\n")
+			slog.Debug("plugin update is downloading")
 		}
 	}
 	// TODO check if update is actually installed

@@ -29,7 +29,7 @@ type AllSpacesQuery struct {
 
 // getSpaceEndpoint creates the correct api endpoint
 func (a *API) getSpaceEndpoint() (*url.URL, error) {
-	return url.ParseRequestURI(a.endPoint.String() + "/space")
+	return url.ParseRequestURI(a.endPoint.String() + "/rest/api/space")
 }
 
 // GetAllSpaces queries content using a query parameters
