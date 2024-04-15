@@ -177,11 +177,13 @@ func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken 
 	if updateStatusUrl == "" {
 		return false, errors.New("location header empty")
 	}
-	// fmt.Printf("\n%s\n", updateStatusUrl)
+
 	ep, err = url.ParseRequestURI(updateStatusUrl)
+
 	if err != nil {
 		fmt.Print(err)
 	}
+
 	for i := 0; i < 30; i++ {
 		time.Sleep(1 * time.Second)
 		req, err := http.NewRequest("GET", ep.String(), nil)
@@ -205,7 +207,6 @@ func (a *API) UpdatePlugin(pluginBinaryUri, pluginName, pluginVersion, upmToken 
 			fmt.Print("HTTP ERROR (not 200)")
 			fmt.Printf("\n%#v\n", res)
 			return false, errors.New("http error blabla")
-
 		}
 
 		contentTypeHeader := string(res.Header.Get("Content-Type"))

@@ -413,7 +413,6 @@ func (a *API) SendHealthCheckStatusesRequest(ep *url.URL, method string) (*Healt
 		return nil, err
 	}
 
-
 	// fmt.Printf("\n%s\n", res)
 	var healthCheckStatuses HealthCheckStatuses
 
@@ -542,9 +541,6 @@ func (a *API) SendUpmTokenRequest(ep *url.URL, method string) (*string, error) {
 
 	var upm string
 	upm = res.Header.Get("Upm-Token")
-	if err != nil {
-		return nil, err
-	}
 
 	return &upm, nil
 }
@@ -566,7 +562,7 @@ func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, plug
 	}
 
 	res, err := a.Client.Do(req)
-	// fmt.Printf("\n%+v\n", res)
+
 	if err != nil {
 		return nil, err
 	}
@@ -577,7 +573,6 @@ func (a *API) SendPluginUpdateRequest(ep *url.URL, method, pluginBinaryUri, plug
 func (a *API) SendGetInstalledMarketplacePluginsRequest(ep *url.URL, method string) (*InstalledMarketplacePlugins, error) {
 
 	req, err := http.NewRequest(method, ep.String(), nil)
-
 	if err != nil {
 		return nil, err
 	}
