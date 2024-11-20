@@ -32,7 +32,7 @@ type Content struct {
 	Space     *Space     `json:"space"`
 	History   *History   `json:"history,omitempty"`
 	Links     *Links     `json:"_links,omitempty"`
-	Metadata  *Metadata  `json:"metadata"`
+	Metadata  *Metadata  `json:"metadata,omitempty"`
 }
 
 // Metadata specifies metadata properties
