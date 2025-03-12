@@ -259,6 +259,7 @@ type History struct {
 	Latest      bool        `json:"latest"`
 	CreatedBy   User        `json:"createdBy"`
 	CreatedDate string      `json:"createdDate"`
+	OwnedBy     User        `json:"ownedBy"`
 }
 
 // LastUpdated  contains information about the last update
