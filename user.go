@@ -7,12 +7,13 @@ import (
 
 // User defines user informations
 type User struct {
-	Type        string `json:"type"`
-	Username    string `json:"username"`
-	UserKey     string `json:"userKey"`
-	AccountID   string `json:"accountId"`
-	DisplayName string `json:"displayName"`
-	Email       string `json:"email"`
+	Type          string `json:"type"`
+	Username      string `json:"username"`
+	UserKey       string `json:"userKey"`
+	AccountID     string `json:"accountId"`
+	AccountStatus string `json:"accountStatus"`
+	DisplayName   string `json:"displayName"`
+	Email         string `json:"email"`
 }
 
 // getUserEndpoint creates the correct api endpoint by given id
