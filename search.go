@@ -8,11 +8,20 @@ import (
 
 // Search results
 type Search struct {
-	Results   []Results `json:"results"`
-	Start     int       `json:"start,omitempty"`
-	Limit     int       `json:"limit,omitempty"`
-	Size      int       `json:"size,omitempty"`
-	TotalSize int       `json:"totalSize,omitempty"`
+	Results   []Results   `json:"results"`
+	Start     int         `json:"start,omitempty"`
+	Limit     int         `json:"limit,omitempty"`
+	Size      int         `json:"size,omitempty"`
+	TotalSize int         `json:"totalSize,omitempty"`
+	Links     SearchLinks `json:"_links,omitempty"`
+}
+
+// Parsing out the _links section to allow paging etc.
+type SearchLinks struct {
+	Base    string `json:"base,omitempty"`
+	Context string `json:"content,omitempty"`
+	Next    string `json:"next,omitempty"`
+	Self    string `json:"self,omitempty"`
 }
 
 // SearchQuery defines query parameters used for searchng
@@ -38,6 +47,19 @@ func (a *API) Search(query SearchQuery) (*Search, error) {
 		return nil, err
 	}
 	ep.RawQuery = addSearchQueryParams(query).Encode()
+	return a.SendSearchRequest(ep, "GET")
+}
+
+// Search querys confluence using CQL, with the ability to pass in the Next header
+// Empty Next header will run search like normal
+func (a *API) SearchWithNext(query SearchQuery, next string) (*Search, error) {
+	if next == "" {
+		return a.Search(query)
+	}
+	ep, err := url.ParseRequestURI(a.endPoint.String() + strings.TrimPrefix(next, "/rest/api"))
+	if err != nil {
+		return nil, err
+	}
 	return a.SendSearchRequest(ep, "GET")
 }
 
