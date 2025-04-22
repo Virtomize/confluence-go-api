@@ -29,4 +29,20 @@ func main() {
 		fmt.Printf("%+v\n", v)
 	}
 
+	// search example with paging using SearchWithNext and Links.Next
+	next := ""
+	for {
+		resp, err := api.SearchWithNext(query, next)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, v := range result.Results {
+			fmt.Printf("%+v\n", v)
+		}
+		next = resp.Links.Next
+		if next == "" {
+			break
+		}
+		log.Printf("Using next page: %s", next)
+	}
 }

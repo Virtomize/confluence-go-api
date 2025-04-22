@@ -343,6 +343,8 @@ func confluenceRestAPIStub() *httptest.Server {
 			resp = User{}
 		case "/wiki/rest/api/search":
 			resp = Search{}
+		case "/wiki/rest/api/search?next=true&cursor=abc123":
+			resp = Search{}
 		case "/wiki/rest/api/content/42/history":
 			resp = History{}
 		case "/wiki/rest/api/content/42/label":
